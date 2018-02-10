@@ -1,0 +1,8 @@
+name: EventCore
+main: com.gmail.ZiomuuSs.Main
+version: 0.1
+commands:
+   EventCore:
+      aliases: [ce]
+      description: Glowna komenda.
+      usage: /ce
