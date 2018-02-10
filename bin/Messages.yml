@@ -11,36 +11,49 @@ error_variable_color: "&4&l"
 #Use %s to set color of message to color that is reserved for variables (see colors section), use %n to return color back to normal.
 #Variables are colored automatically (colors section above to change colors of it or completely remove  
 #You can also use standard minecraft colors (&1, &2, &c, etc.), but it's better to use colors section (so you don't have to edit all messages when you want to change colors)
+
 version: "Wersja: %1"
+value_set: "Pomyslnie ustawiono parametr %1 na %2"
+lobby_set: "Pomyslnie ustawiono lokacje lobby! %1"
 succ_reload: "Pomyslnie przeladowano ustawienia %sEventCore%n!"
-error_reload: "Przeladowano ustawienia, ale napotkano bledy (sprawdz konsole po wiecej informacji)"
-help: "Pomoc pluginu %sEventCore%n:"
-help_1: "(Tutaj kiedys bedzie pomoc)"
-error_no_argument: "Wpisz %s/ce help%n aby zobaczyc liste komend."
-error_player_required: "Ta komenda moze byc uzyta tylko przez gracza!"
-error_permission: "Nie posiadasz odpowiednich uprawnien aby uzyc tej komendy!"
-error_use: "Poprawne uzycie: %1"
 console_hook: "Pomyslnie polaczono z %1!"
 using_economy: "Pomyslnie polaczono z pluginem do ekonomii!"
 charged_for_join: "Zaplaciles %1 za wejscie do eventu"
-error_event_already_exist: "Event o nazwie %1 juz istnieje!"
-error_event_not_exist: "Event o nazwie %1 nie istnieje!"
-error_invalid_EventMode: "Nieprawidlowy tryb eventu! Prawidlowe tryby to: %1"
 event_sucessfully_created: "Pomyslnie stworzyles event o nazwie %1 i typie %2"
 event_list: "Lista wszystkich eventow: %1"
 specific_event_list: "Lista eventow typu %1: %2"
 start_points: "Punkty startu: %1 (%2)"
 surface: "Podloze: %1 (blok: %2)"
 miny: "Minimalny Y: %1"
-show_requiments: "++++++++++++++++Wymagania %1++++++++++++++++"
+show_requiments: "&m==========> %nWymagania %1 &m<=========="
+show_info: "&m==========> %nInformacje %1 &m<=========="
 lobby: "Lobby: %1"
+status: "Status: %1"
+min_max_players: "Gracze(min/max): %1/%2"
+
+#error messages
+error_event_already_exist: "Event o nazwie %1 juz istnieje!"
+error_event_not_exist: "Event o nazwie %1 nie istnieje!"
+error_invalid_EventMode: "Nieprawidlowy tryb eventu! Prawidlowe tryby to: %1"
+error_reload: "Przeladowano ustawienia, ale napotkano bledy (sprawdz konsole po wiecej informacji)"
+error_no_argument: "Wpisz %s/ce help%n aby zobaczyc liste komend."
+error_player_required: "Ta komenda moze byc uzyta tylko przez gracza!"
+error_permission: "Nie posiadasz odpowiednich uprawnien aby uzyc tej komendy!"
+error_use: "Poprawne uzycie: %1"
+error_must_be_integer: "%1 musi byc liczba!"
+error_must_be_greater_than: "&1 musi byc wieksze od %2"
+
+#help pages
+help: "Pomoc pluginu %sEventCore%n:"
+help_1: "(Tutaj kiedys bedzie pomoc)"
 
 #Simple messages
 #(Messages that are used instead of variables in some situations)
 #I strongly reccomend not to use color codes here (But still you can if you want to)
 none: "Brak"
+no_limit: "%sBez limitu"
 check: "Ustawiono"
-error_check: "Nie ustawiono"
+error_check: "%sNie ustawiono"
 coordinates: "(%1/%2/%3 w %4)"
 ready: "gotowy"
 error_not_ready: "%sNiegotowy"

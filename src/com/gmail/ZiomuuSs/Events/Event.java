@@ -71,6 +71,12 @@ public class Event implements Listener {
   public void showRequiments(CommandSender sender) {}
   
   // Getters & Setters
+  public void setMaxPlayers(int mp) {
+    maxPlayers = mp;
+  }
+  public void setMinPlayers(int mp) {
+    minPlayers = mp;
+  }
   @Override
   public String toString() {
     return name;
@@ -95,6 +101,9 @@ public class Event implements Listener {
   }
   public Location getLobby() {
     return lobby;
+  }
+  public void setLobby(Location l) {
+    lobby = l;
   }
   public boolean isInEvent(UUID uuid) {
     if (Players.containsKey(uuid))

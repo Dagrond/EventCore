@@ -1,9 +1,12 @@
 package com.gmail.ZiomuuSs;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Events.Event.EventMode;
 import com.gmail.ZiomuuSs.Utils.Data;
 import com.gmail.ZiomuuSs.Utils.Msg;
@@ -57,20 +60,35 @@ public class EventCoreCommand implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("event") || args[0].equalsIgnoreCase("e")) {
           if (sender.hasPermission("eventcore.admin")) {
             if (args.length == 2 || args.length > 2 && args[2].equalsIgnoreCase("info")) {
-              //displaying info about event
-            } else if (args.length>3) {
+              if (data.isExist(args[1])) {
+                //displaying info about event
+                Event e = data.getEvent(args[1]);
+                sender.sendMessage(Msg.get("show_info", false));
+                sender.sendMessage(Msg.get("status", false, e.getMode().toString()));
+                sender.sendMessage(Msg.get("min_max_players", false, Integer.toString(e.getMinPlayers()), (e.getMaxPlayers() > 0 ? Integer.toString(e.getMaxPlayers()) : Msg.get("no_limit", false))));
+                return true;
+              } else {
+                sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
+                return true;
+              }
+            } else if (args.length>2) {
               if (args[2].equalsIgnoreCase("create")) {
-                if (EventMode.contains(args[3])) {
-                  if (data.isExist(args[1])) {
-                    sender.sendMessage(Msg.get("error_event_already_exist", true, args[1]));
-                    return true;
+                if (args.length>3) {
+                  if (EventMode.contains(args[3])) {
+                    if (data.isExist(args[1])) {
+                      sender.sendMessage(Msg.get("error_event_already_exist", true, args[1]));
+                      return true;
+                    } else {
+                      data.createEvent(EventMode.valueOf(args[3].toUpperCase()), args[1]);
+                      sender.sendMessage(Msg.get("event_sucessfully_created", true, args[1], args[3].toUpperCase()));
+                      return true;
+                    }
                   } else {
-                    data.createEvent(EventMode.valueOf(args[3].toUpperCase()), args[1]);
-                    sender.sendMessage(Msg.get("event_sucessfully_created", true, args[1], args[3].toUpperCase()));
+                    sender.sendMessage(Msg.get("error_invalid_EventMode", true, EventMode.getString()));
                     return true;
                   }
                 } else {
-                  sender.sendMessage(Msg.get("error_invalid_EventMode", true, EventMode.getString()));
+                  sender.sendMessage(Msg.get("error_use", true, "/ce e <event> create <type>"));
                   return true;
                 }
               } else if (args[2].equalsIgnoreCase("requiments")) {
@@ -78,7 +96,74 @@ public class EventCoreCommand implements CommandExecutor {
                   data.getEvent(args[1]).showRequiments(sender);
                   return true;
                 } else {
-                  sender.sendMessage(Msg.get("error_event_not_exist", true));
+                  sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
+                  return true;
+                }
+              } else if (args[2].equalsIgnoreCase("set")) {
+                if (data.isExist(args[1])) {
+                  if (args.length>3) {
+                    if (args[3].equalsIgnoreCase("lobby")) {
+                      if (sender instanceof Player) {
+                        Location l = ((Player) sender).getLocation();
+                        data.getEvent(args[1]).setLobby(l);
+                        sender.sendMessage(Msg.get("lobby_set", true, Msg.get("coordinates", false, Integer.toString(l.getBlockX()), Integer.toString(l.getBlockY()), Integer.toString(l.getBlockZ()), l.getWorld().getName())));
+                        return true;
+                      } else {
+                        sender.sendMessage(Msg.get("error_player_required", true));
+                        return true;
+                      }
+                    } else if (args[3].equalsIgnoreCase("maxplayers")) {
+                      if (args.length>4) {
+                        if (args[4].matches("-?\\d+")) {
+                          int max =  Integer.valueOf(args[4]);
+                          if (max>1) {
+                            data.getEvent(args[1]).setMaxPlayers(max);
+                            sender.sendMessage(Msg.get("value_set", true, "maxPlayers", args[4]));
+                            return true;
+                          } else {
+                            sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "1"));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_must_be_integer", true, "maxPlayers"));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set maxplayers <arg>"));
+                        return true;
+                      }
+                    } else if (args[3].equalsIgnoreCase("minPlayers")) {
+                      if (args.length>4) {
+                        if (args[4].matches("-?\\d+")) {
+                          int min =  Integer.valueOf(args[4]);
+                          if (min>0) {
+                            if (data.getEvent(args[1]).getMaxPlayers()>=min) {
+                              data.getEvent(args[1]).setMinPlayers(min);
+                              sender.sendMessage(Msg.get("value_set", true, "minPlayers", args[4]));
+                              return true;
+                            } else {
+                              sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "minPlayers"));
+                              return true;
+                            }
+                          } else {
+                            sender.sendMessage(Msg.get("error_must_be_greater_than", true, "minPlayers", "0"));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_must_be_integer", true, "minPlayers"));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set minplayers <arg>"));
+                        return true;
+                      }
+                    }
+                  } else {
+                    sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set (arg)"));
+                    return true;
+                  }
+                } else {
+                  sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
                   return true;
                 }
               }
