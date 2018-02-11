@@ -28,6 +28,13 @@ public class SpleefEvent extends Event {
     return status;
   }
   
+  public void setSurfaceMaterial(Material m) {
+    surfaceMaterial = m;
+  }
+  public void setSurface(ProtectedRegion rg) {
+    surface = rg;
+  }
+  
   @Override
   public void showRequiments(CommandSender sender) {
     sender.sendMessage(Msg.get("show_requiments", false, name));

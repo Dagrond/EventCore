@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -12,12 +13,13 @@ import org.bukkit.inventory.Inventory;
 
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class Event implements Listener {
-  public enum EventStatus {
+  public static enum EventStatus {
     NOT_READY, READY, IN_PROGRESS, IN_LOBBY;
   }
-  public enum EventMode {
+  public static enum EventMode {
     SPLEEF;
     public static boolean contains(String s) {
       for (EventMode c : EventMode.values()) {
@@ -34,6 +36,9 @@ public class Event implements Listener {
       }
       return x.substring(0, x.length() - 2);
     }
+  }
+  public static enum REQUIMENT {
+    LOBBY, STARTPOINTS, SURFACE, MINY;
   }
   protected Main plugin;
   EventMode mode;
@@ -71,6 +76,8 @@ public class Event implements Listener {
   public void showRequiments(CommandSender sender) {}
   
   // Getters & Setters
+  public void setSurface(ProtectedRegion rg) {}
+  public void setSurfaceMaterial(Material m) {}
   public void setMaxPlayers(int mp) {
     maxPlayers = mp;
   }

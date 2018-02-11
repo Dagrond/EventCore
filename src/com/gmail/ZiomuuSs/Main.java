@@ -28,7 +28,7 @@ public final class Main extends JavaPlugin {
       RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
       if (economyProvider != null) {
           economy = economyProvider.getProvider();
-          Bukkit.getLogger().info(Msg.get("using_economy", true, "Vault"));
+          Bukkit.getLogger().info(Msg.get("using_economy", true));
       }
     }
     Plugin plugin;
@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
       worldGuard = (WorldGuardPlugin) plugin;
     }
     Bukkit.getLogger().info(Msg.get("console_hook", true, hooks));
-    
+  data.addHooks(worldGuard, worldEdit);
   }
   
   public void onDisable() {

@@ -30,6 +30,8 @@ show_info: "&m==========> %nInformacje %1 &m<=========="
 lobby: "Lobby: %1"
 status: "Status: %1"
 min_max_players: "Gracze(min/max): %1/%2"
+region_set: "Pomyslnie ustawiono region %1 jako podloze!"
+material_set: "Pomyslnie ustawiono material %1 jako podloze!"
 
 #error messages
 error_event_already_exist: "Event o nazwie %1 juz istnieje!"
@@ -41,7 +43,11 @@ error_player_required: "Ta komenda moze byc uzyta tylko przez gracza!"
 error_permission: "Nie posiadasz odpowiednich uprawnien aby uzyc tej komendy!"
 error_use: "Poprawne uzycie: %1"
 error_must_be_integer: "%1 musi byc liczba!"
-error_must_be_greater_than: "&1 musi byc wieksze od %2"
+error_must_be_greater_than: "%1 musi byc wieksze od %2"
+error_parameter_match: "Parametr %1 moze byc przypisany tylko do eventu typu %2!"
+error_region_not_exist: "Region %1 nie istnieje! (Bycmoze jestes w innym swiecie?)"
+error_material_not_exist: "Nie istnieje material %1!"
+error_material_not_solid: "Material na podloze musi byc stalym blokiem!"
 
 #help pages
 help: "Pomoc pluginu %sEventCore%n:"

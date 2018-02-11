@@ -1,6 +1,7 @@
 package com.gmail.ZiomuuSs;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -124,12 +125,16 @@ public class EventCoreCommand implements CommandExecutor {
                             sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "1"));
                             return true;
                           }
+                        } else if (args[4].equalsIgnoreCase("unlimited")) {
+                          data.getEvent(args[1]).setMaxPlayers(0);
+                          sender.sendMessage(Msg.get("value_set", true, "maxPlayers", args[4]));
+                          return true;
                         } else {
                           sender.sendMessage(Msg.get("error_must_be_integer", true, "maxPlayers"));
                           return true;
                         }
                       } else {
-                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set maxplayers <arg>"));
+                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set maxplayers <(integer)/(unlimited)>"));
                         return true;
                       }
                     } else if (args[3].equalsIgnoreCase("minPlayers")) {
@@ -155,6 +160,50 @@ public class EventCoreCommand implements CommandExecutor {
                         }
                       } else {
                         sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set minplayers <arg>"));
+                        return true;
+                      }
+                    } else if (args[3].equalsIgnoreCase("surfaceregion")) {
+                      if (data.getEvent(args[1]).getMode().equals(EventMode.SPLEEF)) {
+                        if (sender instanceof Player) {
+                          if (args.length>4) {
+                            if (data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]) != null) {
+                              data.getEvent(args[1]).setSurface(data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]));
+                              sender.sendMessage(Msg.get("region_set", true, args[4]));
+                              return true;
+                            } else {
+                              sender.sendMessage(Msg.get("error_region_not_exist", true, args[4]));
+                              return true;
+                            }
+                          } else {
+                            sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set surfaceregion <region>"));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_player_required", true));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_parameter_match", true, args[3].toUpperCase(), EventMode.SPLEEF.toString()));
+                        return true;
+                      }
+                    } else if (args[3].equalsIgnoreCase("surfacematerial")) {
+                      if (args.length>4) {
+                        Material m = Material.matchMaterial(args[4]);
+                        if (m != null) {
+                          if (m.isBlock() && m.isSolid()) {
+                            data.getEvent(args[1]).setSurfaceMaterial(m);
+                            sender.sendMessage(Msg.get("material_set", true, args[4].toUpperCase()));
+                            return true;
+                          } else {
+                            sender.sendMessage(Msg.get("error_material_not_solid", true));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_material_not_exist", true, args[4].toUpperCase()));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set surfacematerial <material>"));
                         return true;
                       }
                     }

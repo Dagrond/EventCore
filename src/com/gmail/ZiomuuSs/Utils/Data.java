@@ -7,10 +7,14 @@ import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Events.Event.EventMode;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.gmail.ZiomuuSs.Events.SpleefEvent;
 
 public class Data {
   protected Main plugin;
+  WorldGuardPlugin worldGuard;
+  WorldEditPlugin worldEdit;
   protected ConfigAccessor msgAccessor;
   protected HashMap<String, Event> loadedEvents = new HashMap<>(); //Stores all events. String is name of event
   protected HashMap<UUID, EventPlayer> loadedPlayers = new HashMap<>(); //Stores all players which are in event. (If specific player is not in this hashmap, he is not in event as well
@@ -19,6 +23,11 @@ public class Data {
   public Data (Main plugin) {
     this.plugin = plugin;
     load();
+  }
+  
+  public void addHooks (WorldGuardPlugin wg, WorldEditPlugin we) {
+    worldGuard = wg;
+    worldEdit = we;
   }
   
   public boolean load() {
@@ -33,6 +42,13 @@ public class Data {
     case SPLEEF:
       loadedEvents.put(name, new SpleefEvent(name, plugin));
     }
+  }
+  
+  public WorldGuardPlugin getWorldGuard() {
+    return worldGuard;
+  }
+  public WorldEditPlugin getWorldEdit() {
+    return worldEdit;
   }
   
   public String getPrettyEventList() {
