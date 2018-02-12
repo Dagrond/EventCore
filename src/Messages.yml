@@ -32,6 +32,9 @@ status: "Status: %1"
 min_max_players: "Gracze(min/max): %1/%2"
 region_set: "Pomyslnie ustawiono region %1 jako podloze!"
 material_set: "Pomyslnie ustawiono material %1 jako podloze!"
+event_started: "Rozpoczales event %1!"
+event_start_broadcast: "Event %1 startuje za %2 sekund. Wpisz %s/e join%n aby dolaczyc!"
+event_started_broadcast: "Event %1 wystartowal!" 
 
 #error messages
 error_event_already_exist: "Event o nazwie %1 juz istnieje!"

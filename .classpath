@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="//pepsi/USERS/Dagrond/Desktop/Java/libraries/AuthMe-5.3.2.jar"/>
-	<classpathentry kind="lib" path="//pepsi/USERS/Dagrond/Desktop/Java/libraries/Vault.jar"/>
-	<classpathentry kind="lib" path="//pepsi/USERS/Dagrond/Desktop/Java/libraries/worldedit-bukkit-6.1.7.3.jar"/>
-	<classpathentry kind="lib" path="//pepsi/USERS/Dagrond/Desktop/Java/libraries/worldguard-6.2.1.jar"/>
-	<classpathentry kind="lib" path="//pepsi/USERS/Dagrond/Desktop/Java/libraries/spigot-api-1.12.2-R0.1-SNAPSHOT-shaded-b1600.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Desktop/Java/biblioteki/AuthMe-5.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Desktop/Java/biblioteki/Vault.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Desktop/Java/biblioteki/worldedit-bukkit-6.1.7.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Desktop/Java/biblioteki/worldguard-6.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Desktop/Java/biblioteki/spigot-api-1.12.2-R0.1-SNAPSHOT-shaded-b1600.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

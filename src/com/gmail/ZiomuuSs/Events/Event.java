@@ -44,9 +44,9 @@ public class Event implements Listener {
   EventMode mode;
   protected String name; //name of event
   protected boolean startWhenMax; //Should event start (ignoring delay) when amount of players in lobby hit max?
-  protected HashMap<UUID, EventPlayer> Players; //Players in event
+  protected HashMap<UUID, EventPlayer> Players = new HashMap<>(); //Players in event
   protected Location lobby; //coordinates of lobby
-  protected HashSet<Location> startPoints; //coordinates of spawn points when event begin
+  protected HashSet<Location> startPoints = new HashSet<>(); //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers; //max players in event
   protected int minPlayers; //min amount of players to start event

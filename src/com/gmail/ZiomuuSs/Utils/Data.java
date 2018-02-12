@@ -35,6 +35,11 @@ public class Data {
     return inProgress;
   }
   
+  public void setCurrentEvent(Event e) {
+    inProgress = e;
+  }
+  
+  
   public boolean load() {
     msgAccessor = new ConfigAccessor(plugin, "Messages.yml");
     msgAccessor.saveDefaultConfig();

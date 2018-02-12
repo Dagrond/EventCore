@@ -1,5 +1,6 @@
 package com.gmail.ZiomuuSs.Events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
@@ -38,6 +39,51 @@ public class SpleefEvent extends Event {
   @Override
   public void start() {
     //start event code...
+    plugin.getData().setCurrentEvent(this);
+    status = EventStatus.IN_LOBBY;
+    Bukkit.broadcastMessage(Msg.get("event_start_broadcast", true, name, Integer.toString(delay)));
+    //3
+    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+      @Override
+      public void run() {
+        if (status == EventStatus.IN_LOBBY)
+          Bukkit.broadcastMessage(Msg.get("event_start_broadcast", true, name, "3"));
+      }
+    }, 20*delay-3);
+    //2
+    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+      @Override
+      public void run() {
+        if (status == EventStatus.IN_LOBBY)
+          Bukkit.broadcastMessage(Msg.get("event_start_broadcast", true, name, "2"));
+      }
+    }, 20*delay-2);
+    //1
+    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+      @Override
+      public void run() {
+        if (status == EventStatus.IN_LOBBY)
+          Bukkit.broadcastMessage(Msg.get("event_start_broadcast", true, name, "1"));
+      }
+    }, 20*delay-1);
+    //start
+    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+      @Override
+      public void run() {
+        if (status == EventStatus.IN_LOBBY) {
+          Bukkit.broadcastMessage(Msg.get("event_started_broadcast", true, name));
+          status = EventStatus.IN_PROGRESS;
+          startArena();
+        }
+      }
+    }, 20*delay);
+}
+
+  public void startArena() {
+    //giving equipment to players
+    //teleport players to start points
+    //setting surface
+    //etc
   }
   
   @Override

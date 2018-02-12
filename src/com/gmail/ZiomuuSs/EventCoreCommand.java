@@ -220,7 +220,9 @@ public class EventCoreCommand implements CommandExecutor {
                 if (data.isExist(args[1])) {
                   Event e = data.getEvent(args[1]);
                   if (e.getStatus() == EventStatus.READY) {
-                    //todo(?)
+                    e.start();
+                    sender.sendMessage(Msg.get("event_started", true, args[1]));
+                    return true;
                   } else {
                     sender.sendMessage(Msg.get("error_event_status", true, args[1], e.getStatus().toString()));
                     return true;
