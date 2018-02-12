@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Events.Event.EventMode;
+import com.gmail.ZiomuuSs.Events.Event.EventStatus;
 import com.gmail.ZiomuuSs.Utils.Data;
 import com.gmail.ZiomuuSs.Utils.Msg;
 
@@ -215,8 +216,20 @@ public class EventCoreCommand implements CommandExecutor {
                   sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
                   return true;
                 }
-              }
-              //space for setting up an event
+              } else if (args[2].equalsIgnoreCase("start")) {
+                if (data.isExist(args[1])) {
+                  Event e = data.getEvent(args[1]);
+                  if (e.getStatus() == EventStatus.READY) {
+                    //todo(?)
+                  } else {
+                    sender.sendMessage(Msg.get("error_event_status", true, args[1], e.getStatus().toString()));
+                    return true;
+                  }
+                } else {
+                  sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
+                  return true;
+                }
+              } //next e arguments
             } else {
               sender.sendMessage(Msg.get("error_use", true, "/ce e <event> (arg) (arg)"));
               return true;

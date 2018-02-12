@@ -64,6 +64,8 @@ public class Event implements Listener {
     delay = 60;
   }
   
+  public void start() {}
+  
   public void kickPlayer (UUID uuid) {
     Players.get(uuid).quit();
     Players.remove(uuid);
@@ -90,6 +92,9 @@ public class Event implements Listener {
   }
   public EventMode getMode() {
     return mode;
+  }
+  public EventStatus getStatus() {
+    return status;
   }
   public int getMaxPlayers() {
     return maxPlayers;

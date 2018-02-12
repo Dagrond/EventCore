@@ -16,6 +16,7 @@ public class Data {
   WorldGuardPlugin worldGuard;
   WorldEditPlugin worldEdit;
   protected ConfigAccessor msgAccessor;
+  protected Event inProgress; // event that is currently in progress. Only one event at time, for now.
   protected HashMap<String, Event> loadedEvents = new HashMap<>(); //Stores all events. String is name of event
   protected HashMap<UUID, EventPlayer> loadedPlayers = new HashMap<>(); //Stores all players which are in event. (If specific player is not in this hashmap, he is not in event as well
   
@@ -28,6 +29,10 @@ public class Data {
   public void addHooks (WorldGuardPlugin wg, WorldEditPlugin we) {
     worldGuard = wg;
     worldEdit = we;
+  }
+  
+  public Event getEventInProgress() {
+    return inProgress;
   }
   
   public boolean load() {

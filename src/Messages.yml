@@ -48,6 +48,7 @@ error_parameter_match: "Parametr %1 moze byc przypisany tylko do eventu typu %2!
 error_region_not_exist: "Region %1 nie istnieje! (Bycmoze jestes w innym swiecie?)"
 error_material_not_exist: "Nie istnieje material %1!"
 error_material_not_solid: "Material na podloze musi byc stalym blokiem!"
+error_event_status: "Event %1 ma nieodpowiedni status! Wymaga %sREADY%n, posiada %2"
 
 #help pages
 help: "Pomoc pluginu %sEventCore%n:"

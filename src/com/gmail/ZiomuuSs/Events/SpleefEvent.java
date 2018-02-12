@@ -36,6 +36,11 @@ public class SpleefEvent extends Event {
   }
   
   @Override
+  public void start() {
+    //start event code...
+  }
+  
+  @Override
   public void showRequiments(CommandSender sender) {
     sender.sendMessage(Msg.get("show_requiments", false, name));
     if (lobby != null)
