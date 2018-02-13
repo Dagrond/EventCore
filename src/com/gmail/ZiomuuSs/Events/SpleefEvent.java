@@ -84,6 +84,7 @@ public class SpleefEvent extends Event {
     //teleport players to start points
     //setting surface
     //etc
+    
   }
   
   @Override
@@ -111,6 +112,13 @@ public class SpleefEvent extends Event {
     else
       sender.sendMessage(Msg.get("miny", false, Msg.get("error_check", false)));
     
+  }
+  
+  @Override
+  public boolean isRequired (REQUIMENT r) {
+    if (r == REQUIMENT.LOBBY || r == REQUIMENT.MINY || r == REQUIMENT.STARTPOINTS || r == REQUIMENT.SURFACE || r == REQUIMENT.MINPLAYERS || r == REQUIMENT.MAXPLAYERS || r == REQUIMENT.INVENTORY)
+      return true;
+    return false;
   }
   
   @EventHandler

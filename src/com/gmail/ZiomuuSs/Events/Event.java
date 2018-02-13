@@ -38,7 +38,7 @@ public class Event implements Listener {
     }
   }
   public static enum REQUIMENT {
-    LOBBY, STARTPOINTS, SURFACE, MINY;
+    LOBBY, STARTPOINTS, SURFACE, MINY, MINPLAYERS, MAXPLAYERS, INVENTORY;
   }
   protected Main plugin;
   EventMode mode;
@@ -80,6 +80,12 @@ public class Event implements Listener {
   // Getters & Setters
   public void setSurface(ProtectedRegion rg) {}
   public void setSurfaceMaterial(Material m) {}
+  public void setStartInventory(Inventory inv) {
+    startInventory = inv;
+  }
+  public boolean isRequired (REQUIMENT r) {
+    return false;
+  }
   public void setMaxPlayers(int mp) {
     maxPlayers = mp;
   }

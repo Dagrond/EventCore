@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Events.Event.EventMode;
 import com.gmail.ZiomuuSs.Events.Event.EventStatus;
+import com.gmail.ZiomuuSs.Events.Event.REQUIMENT;
 import com.gmail.ZiomuuSs.Utils.Data;
 import com.gmail.ZiomuuSs.Utils.Msg;
 
@@ -105,66 +106,81 @@ public class EventCoreCommand implements CommandExecutor {
                 if (data.isExist(args[1])) {
                   if (args.length>3) {
                     if (args[3].equalsIgnoreCase("lobby")) {
-                      if (sender instanceof Player) {
-                        Location l = ((Player) sender).getLocation();
-                        data.getEvent(args[1]).setLobby(l);
-                        sender.sendMessage(Msg.get("lobby_set", true, Msg.get("coordinates", false, Integer.toString(l.getBlockX()), Integer.toString(l.getBlockY()), Integer.toString(l.getBlockZ()), l.getWorld().getName())));
-                        return true;
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.LOBBY)) {
+                        if (sender instanceof Player) {
+                          Location l = ((Player) sender).getLocation();
+                          data.getEvent(args[1]).setLobby(l);
+                          sender.sendMessage(Msg.get("lobby_set", true, Msg.get("coordinates", false, Integer.toString(l.getBlockX()), Integer.toString(l.getBlockY()), Integer.toString(l.getBlockZ()), l.getWorld().getName())));
+                          return true;
+                        } else {
+                          sender.sendMessage(Msg.get("error_player_required", true));
+                          return true;
+                        }
                       } else {
-                        sender.sendMessage(Msg.get("error_player_required", true));
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "LOBBY", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
                     } else if (args[3].equalsIgnoreCase("maxplayers")) {
-                      if (args.length>4) {
-                        if (args[4].matches("-?\\d+")) {
-                          int max =  Integer.valueOf(args[4]);
-                          if (max>1) {
-                            data.getEvent(args[1]).setMaxPlayers(max);
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.MAXPLAYERS)) {
+                        if (args.length>4) {
+                          if (args[4].matches("-?\\d+")) {
+                            int max =  Integer.valueOf(args[4]);
+                            if (max>1) {
+                              data.getEvent(args[1]).setMaxPlayers(max);
+                              sender.sendMessage(Msg.get("value_set", true, "maxPlayers", args[4]));
+                              return true;
+                            } else {
+                              sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "1"));
+                              return true;
+                            }
+                          } else if (args[4].equalsIgnoreCase("unlimited")) {
+                            data.getEvent(args[1]).setMaxPlayers(0);
                             sender.sendMessage(Msg.get("value_set", true, "maxPlayers", args[4]));
                             return true;
                           } else {
-                            sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "1"));
+                            sender.sendMessage(Msg.get("error_must_be_integer", true, "maxPlayers"));
                             return true;
                           }
-                        } else if (args[4].equalsIgnoreCase("unlimited")) {
-                          data.getEvent(args[1]).setMaxPlayers(0);
-                          sender.sendMessage(Msg.get("value_set", true, "maxPlayers", args[4]));
-                          return true;
                         } else {
-                          sender.sendMessage(Msg.get("error_must_be_integer", true, "maxPlayers"));
+                          sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set maxplayers <(integer)/(unlimited)>"));
                           return true;
                         }
                       } else {
-                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set maxplayers <(integer)/(unlimited)>"));
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "MAXPLAYERS", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
                     } else if (args[3].equalsIgnoreCase("minPlayers")) {
-                      if (args.length>4) {
-                        if (args[4].matches("-?\\d+")) {
-                          int min =  Integer.valueOf(args[4]);
-                          if (min>0) {
-                            if (data.getEvent(args[1]).getMaxPlayers()>=min) {
-                              data.getEvent(args[1]).setMinPlayers(min);
-                              sender.sendMessage(Msg.get("value_set", true, "minPlayers", args[4]));
-                              return true;
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.MINPLAYERS)) {
+                        if (args.length>4) {
+                          if (args[4].matches("-?\\d+")) {
+                            int min =  Integer.valueOf(args[4]);
+                            if (min>0) {
+                              if (data.getEvent(args[1]).getMaxPlayers()>=min) {
+                                data.getEvent(args[1]).setMinPlayers(min);
+                                sender.sendMessage(Msg.get("value_set", true, "minPlayers", args[4]));
+                                return true;
+                              } else {
+                                sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "minPlayers"));
+                                return true;
+                              }
                             } else {
-                              sender.sendMessage(Msg.get("error_must_be_greater_than", true, "maxPlayers", "minPlayers"));
+                              sender.sendMessage(Msg.get("error_must_be_greater_than", true, "minPlayers", "0"));
                               return true;
                             }
                           } else {
-                            sender.sendMessage(Msg.get("error_must_be_greater_than", true, "minPlayers", "0"));
+                            sender.sendMessage(Msg.get("error_must_be_integer", true, "minPlayers"));
                             return true;
                           }
                         } else {
-                          sender.sendMessage(Msg.get("error_must_be_integer", true, "minPlayers"));
+                          sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set minplayers <arg>"));
                           return true;
                         }
                       } else {
-                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set minplayers <arg>"));
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "MINPLAYERS", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
                     } else if (args[3].equalsIgnoreCase("surfaceregion")) {
-                      if (data.getEvent(args[1]).getMode().equals(EventMode.SPLEEF)) {
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.SURFACE)) {
                         if (sender instanceof Player) {
                           if (args.length>4) {
                             if (data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]) != null) {
@@ -184,27 +200,46 @@ public class EventCoreCommand implements CommandExecutor {
                           return true;
                         }
                       } else {
-                        sender.sendMessage(Msg.get("error_parameter_match", true, args[3].toUpperCase(), EventMode.SPLEEF.toString()));
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "SURFACE", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
                     } else if (args[3].equalsIgnoreCase("surfacematerial")) {
-                      if (args.length>4) {
-                        Material m = Material.matchMaterial(args[4]);
-                        if (m != null) {
-                          if (m.isBlock() && m.isSolid()) {
-                            data.getEvent(args[1]).setSurfaceMaterial(m);
-                            sender.sendMessage(Msg.get("material_set", true, args[4].toUpperCase()));
-                            return true;
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.SURFACE)) {
+                        if (args.length>4) {
+                          Material m = Material.matchMaterial(args[4]);
+                          if (m != null) {
+                            if (m.isBlock() && m.isSolid()) {
+                              data.getEvent(args[1]).setSurfaceMaterial(m);
+                              sender.sendMessage(Msg.get("material_set", true, args[4].toUpperCase()));
+                              return true;
+                            } else {
+                              sender.sendMessage(Msg.get("error_material_not_solid", true));
+                              return true;
+                            }
                           } else {
-                            sender.sendMessage(Msg.get("error_material_not_solid", true));
+                            sender.sendMessage(Msg.get("error_material_not_exist", true, args[4].toUpperCase()));
                             return true;
                           }
                         } else {
-                          sender.sendMessage(Msg.get("error_material_not_exist", true, args[4].toUpperCase()));
+                          sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set surfacematerial <material>"));
                           return true;
                         }
                       } else {
-                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set surfacematerial <material>"));
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "SURFACE", data.getEvent(args[1]).getMode().toString()));
+                        return true;
+                      }
+                    } else if (args[3].equalsIgnoreCase("inventory")) {
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.INVENTORY)) {
+                        if (sender instanceof Player) {
+                          data.getEvent(args[1]).setStartInventory(((Player) sender).getInventory());
+                          sender.sendMessage(Msg.get("iventory_set", true, args[1]));
+                          return true;
+                        } else {
+                          sender.sendMessage(Msg.get("error_player_required", true));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "INVENTORY", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
                     }
