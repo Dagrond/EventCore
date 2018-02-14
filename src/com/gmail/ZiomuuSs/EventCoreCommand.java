@@ -266,13 +266,50 @@ public class EventCoreCommand implements CommandExecutor {
                   sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
                   return true;
                 }
-              } //next e arguments
+              } else if (args[2].equalsIgnoreCase("startpoint")) {
+                if (sender instanceof Player) {
+                  if (args[3].matches("-?\\d+")) {
+                    int index = Integer.valueOf(args[3]);
+                    if (index>=0) {
+                      
+                    } else {
+                      sender.sendMessage(Msg.get("error_must_be_positive", true, "startPoint"));
+                      return true;
+                    }
+                  } else {
+                    sender.sendMessage(Msg.get("error_must_be_integer", true, "startPoint"));
+                    return true;
+                  }
+                } else {
+                  sender.sendMessage(Msg.get("error_player_required", true));
+                  return true;
+                }
+              }//next e arguments
             } else {
               sender.sendMessage(Msg.get("error_use", true, "/ce e <event> (arg) (arg)"));
               return true;
             }
           } else {
             sender.sendMessage(Msg.get("error_permission", true));
+            return true;
+          }
+        } else if(args[0].equalsIgnoreCase("join")) {
+          if (sender instanceof Player) {
+            if (data.getEventInProgress() != null || data.getEventInProgress().getStatus() != EventStatus.IN_LOBBY) {
+              if (data.isInEvent(((Player) sender)) == false) {
+                data.addPlayerToEvent(((Player) sender));
+                sender.sendMessage(Msg.get("event_join", true, data.getEventInProgress().toString()));
+                return true;
+              } else {
+                sender.sendMessage(Msg.get("error_already_in_event", true));
+                return true;
+              }
+            } else {
+              sender.sendMessage(Msg.get("", true));
+              return true;
+            }
+          } else {
+            sender.sendMessage(Msg.get("error_player_required", true));
             return true;
           }
         } else {

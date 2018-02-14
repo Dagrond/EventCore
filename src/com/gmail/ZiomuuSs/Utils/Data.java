@@ -3,6 +3,8 @@ package com.gmail.ZiomuuSs.Utils;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Events.Event;
@@ -18,7 +20,6 @@ public class Data {
   protected ConfigAccessor msgAccessor;
   protected Event inProgress; // event that is currently in progress. Only one event at time, for now.
   protected HashMap<String, Event> loadedEvents = new HashMap<>(); //Stores all events. String is name of event
-  protected HashMap<UUID, EventPlayer> loadedPlayers = new HashMap<>(); //Stores all players which are in event. (If specific player is not in this hashmap, he is not in event as well
   
   //constructor is loading all config files
   public Data (Main plugin) {
@@ -35,10 +36,21 @@ public class Data {
     return inProgress;
   }
   
+  public void addPlayerToEvent(Player player) {
+    inProgress.getPlayers().put(player.getUniqueId(), new EventPlayer(player.getUniqueId(), player.getInventory(), player.getLocation(), player.getLevel(), inProgress.getLobby()));
+  }
+  
   public void setCurrentEvent(Event e) {
     inProgress = e;
   }
   
+  public boolean isInEvent(Player player) {
+    for(UUID uuid : inProgress.getPlayers().keySet()) {
+      if (uuid.equals(player.getUniqueId()))
+        return true;
+    }
+    return false;
+  }
   
   public boolean load() {
     msgAccessor = new ConfigAccessor(plugin, "Messages.yml");
@@ -93,16 +105,11 @@ public class Data {
   public Event getEvent(String name) {
     return loadedEvents.get(name);
   }
+  
   public EventPlayer getPlayer(UUID uuid) {
-    return loadedPlayers.get(uuid);
+    return inProgress.getPlayers().get(uuid);
   }
   
-  public boolean isExist(UUID uuid) {
-    if (loadedPlayers.containsKey(uuid))
-      return true;
-    else
-      return false;
-  }
   public boolean isExist(String name) {
     if (loadedEvents == null)
       return false;

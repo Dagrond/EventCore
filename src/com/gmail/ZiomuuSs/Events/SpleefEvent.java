@@ -95,7 +95,7 @@ public class SpleefEvent extends Event {
     else
       sender.sendMessage(Msg.get("lobby", false, Msg.get("error_check", false)));
     if (startPoints != null)
-      sender.sendMessage(Msg.get("start_points", false, Msg.get("check", false), Integer.toString(startPoints.size())));
+      sender.sendMessage(Msg.get("start_points", false, Msg.get("check", false), Integer.toString(startPoints.length)));
     else
       sender.sendMessage(Msg.get("start_points", false, Msg.get("error_check", false), Msg.get("none", false)));
     if (surface != null && surfaceMaterial != null) {

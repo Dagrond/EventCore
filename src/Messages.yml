@@ -36,6 +36,7 @@ event_started: "Rozpoczales event %1!"
 event_start_broadcast: "Event %1 startuje za %2 sekund. Wpisz %s/e join%n aby dolaczyc!"
 event_started_broadcast: "Event %1 wystartowal!"
 iventory_set: "Pomyslnie ustawiles startowy ekwipunek graczy w evencie %1"
+event_join: "Dolaczyles do eventu %1!"
 
 #error messages
 error_event_already_exist: "Event o nazwie %1 juz istnieje!"
@@ -53,6 +54,9 @@ error_region_not_exist: "Region %1 nie istnieje! (Bycmoze jestes w innym swiecie
 error_material_not_exist: "Nie istnieje material %1!"
 error_material_not_solid: "Material na podloze musi byc stalym blokiem!"
 error_event_status: "Event %1 ma nieodpowiedni status! Wymaga %sREADY%n, posiada %2"
+error_no_event_in_lobby: "Obecnie nie trwa zaden event, do ktorego moglbys dolaczyc!"
+error_already_in_event: "Jestes juz w evencie! Aby opuscic event wpisz %s/e leave%n!"
+error_must_be_positive: "Parametr %1 musi byc dodatni lub rowny 0!"
 
 #help pages
 help: "Pomoc pluginu %sEventCore%n:"

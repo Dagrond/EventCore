@@ -1,13 +1,11 @@
 package com.gmail.ZiomuuSs.Events;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 
@@ -44,9 +42,9 @@ public class Event implements Listener {
   EventMode mode;
   protected String name; //name of event
   protected boolean startWhenMax; //Should event start (ignoring delay) when amount of players in lobby hit max?
-  protected HashMap<UUID, EventPlayer> Players = new HashMap<>(); //Players in event
+  protected HashMap<UUID, EventPlayer> players = new HashMap<>(); //Players in event
   protected Location lobby; //coordinates of lobby
-  protected HashSet<Location> startPoints = new HashSet<>(); //coordinates of spawn points when event begin
+  protected Location[] startPoints; //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers; //max players in event
   protected int minPlayers; //min amount of players to start event
@@ -66,18 +64,23 @@ public class Event implements Listener {
   
   public void start() {}
   
-  public void kickPlayer (UUID uuid) {
-    Players.get(uuid).quit();
-    Players.remove(uuid);
+  //returns false if an start point was added, or returns true if an start point was edited
+  public boolean editStartPoint(Location loc, int index) {
+    //todo
+    return false;
   }
   
-  public void addPlayer (Player player) {
-    
+  public void kickPlayer (UUID uuid) {
+    players.get(uuid).quit();
+    players.remove(uuid);
   }
   
   public void showRequiments(CommandSender sender) {}
   
   // Getters & Setters
+  public HashMap<UUID, EventPlayer> getPlayers() {
+    return players;
+  }
   public void setSurface(ProtectedRegion rg) {}
   public void setSurfaceMaterial(Material m) {}
   public void setStartInventory(Inventory inv) {
@@ -114,7 +117,7 @@ public class Event implements Listener {
   public Inventory getStartingInventory() {
     return startInventory;
   }
-  public HashSet<Location> getStartPoints() {
+  public Location[] getStartPoints() {
     return startPoints;
   }
   public Location getLobby() {
@@ -124,7 +127,7 @@ public class Event implements Listener {
     lobby = l;
   }
   public boolean isInEvent(UUID uuid) {
-    if (Players.containsKey(uuid))
+    if (players.containsKey(uuid))
       return true;
     else
       return false;
