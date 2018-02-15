@@ -268,16 +268,24 @@ public class EventCoreCommand implements CommandExecutor {
                 }
               } else if (args[2].equalsIgnoreCase("startpoint")) {
                 if (sender instanceof Player) {
-                  if (args[3].matches("-?\\d+")) {
-                    int index = Integer.valueOf(args[3]);
-                    if (index>=0) {
-                      
+                  if (data.getEvent(args[1]).isRequired(REQUIMENT.STARTPOINTS)) {
+                    if (args[3].matches("-?\\d+")) {
+                      int index = Integer.valueOf(args[3]);
+                      if (index>0) {
+                        data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation(), index);
+                        sender.sendMessage(Msg.get("startpoint_setted", true, Integer.toString(index), Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
+                        return true;
+                      } else {
+                        sender.sendMessage(Msg.get("error_must_be_greater_than", true, "startPoint", "0"));
+                        return true;
+                      }
                     } else {
-                      sender.sendMessage(Msg.get("error_must_be_positive", true, "startPoint"));
+                      data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation());
+                      sender.sendMessage(Msg.get("startpoint_added", true, Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
                       return true;
                     }
                   } else {
-                    sender.sendMessage(Msg.get("error_must_be_integer", true, "startPoint"));
+                    sender.sendMessage(Msg.get("error_parameter_match", true, "STARTPOINTS", data.getEvent(args[1]).getMode().toString()));
                     return true;
                   }
                 } else {

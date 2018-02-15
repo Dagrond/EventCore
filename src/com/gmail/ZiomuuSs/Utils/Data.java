@@ -1,9 +1,13 @@
 package com.gmail.ZiomuuSs.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
@@ -36,8 +40,43 @@ public class Data {
     return inProgress;
   }
   
+  public int getPlayerAmount() {
+    return inProgress.getPlayers().size();
+  }
+  
+  public void giveEventInventory(Inventory inv) {
+    for (UUID uuid : inProgress.getPlayers().keySet()) {
+      Player player = Bukkit.getPlayer(uuid);
+      if (player != null)
+        player.getInventory().setContents(inv.getContents());;
+    }
+  }
+  
+  public void teleportToStartLocation(ArrayList<Location> loc) {
+    int index = 0;
+    for (UUID uuid : inProgress.getPlayers().keySet()) {
+      Player player = Bukkit.getPlayer(uuid);
+      if (player != null) {
+        player.teleport(loc.get(index));
+        if (index >= loc.size()) {
+          index =0;
+        } else {
+          ++index;
+        }
+      }
+    }
+  }
+  
+  public void broadcastToEventPlayers(String msg) {
+    for (UUID uuid : inProgress.getPlayers().keySet()) {
+      Player player = Bukkit.getPlayer(uuid);
+      if (player != null)
+        player.sendMessage(msg);
+    }
+  }
+  
   public void addPlayerToEvent(Player player) {
-    inProgress.getPlayers().put(player.getUniqueId(), new EventPlayer(player.getUniqueId(), player.getInventory(), player.getLocation(), player.getLevel(), inProgress.getLobby()));
+    inProgress.getPlayers().put(player.getUniqueId(), new EventPlayer(player.getUniqueId(), player.getInventory(), player.getLocation(), player.getLevel(), inProgress.getLobby(), this));
   }
   
   public void setCurrentEvent(Event e) {
@@ -63,6 +102,7 @@ public class Data {
     switch (m) {
     case SPLEEF:
       loadedEvents.put(name, new SpleefEvent(name, plugin));
+      break;
     }
   }
   

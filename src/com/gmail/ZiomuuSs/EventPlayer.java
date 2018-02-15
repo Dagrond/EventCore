@@ -7,18 +7,23 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.gmail.ZiomuuSs.Utils.Data;
+import com.gmail.ZiomuuSs.Utils.Msg;
+
 
 public class EventPlayer {
   protected UUID uuid; //player's uuid
   protected Inventory inv; //player's inventory
   protected Location loc; //player's location
   protected int lvl; //player's level
+  protected Data data;
   
-  public EventPlayer(UUID uuid, Inventory inv, Location loc, int lvl, Location lobby) {
+  public EventPlayer(UUID uuid, Inventory inv, Location loc, int lvl, Location lobby, Data data) {
     this.uuid = uuid;
     this.inv = inv;
     this.loc = loc;
     this.lvl = lvl;
+    this.data = data;
     Player player = Bukkit.getPlayer(uuid);
     if (player != null) {
       player.getInventory().clear();
@@ -47,6 +52,23 @@ public class EventPlayer {
       player.getInventory().setContents(inv.getContents());
       player.setLevel(lvl);
       player.teleport(loc);
+      player.sendMessage(Msg.get("error_event_lose", true));
+      data.broadcastToEventPlayers(Msg.get("", true, player.getDisplayName(), Integer.toString(data.getPlayerAmount())));
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public boolean won(String name) {
+    Player player = Bukkit.getPlayer(uuid);
+    if (player != null) {
+      player.getInventory().clear();
+      player.getInventory().setContents(inv.getContents());
+      player.setLevel(lvl);
+      player.teleport(loc);
+      player.sendMessage(Msg.get("event_won", true));
+      Bukkit.broadcastMessage(Msg.get("event_end", true, player.getDisplayName(), name));
       return true;
     } else {
       return false;

@@ -1,5 +1,6 @@
 package com.gmail.ZiomuuSs.Events;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -44,7 +45,7 @@ public class Event implements Listener {
   protected boolean startWhenMax; //Should event start (ignoring delay) when amount of players in lobby hit max?
   protected HashMap<UUID, EventPlayer> players = new HashMap<>(); //Players in event
   protected Location lobby; //coordinates of lobby
-  protected Location[] startPoints; //coordinates of spawn points when event begin
+  protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers; //max players in event
   protected int minPlayers; //min amount of players to start event
@@ -62,14 +63,6 @@ public class Event implements Listener {
     delay = 60;
   }
   
-  public void start() {}
-  
-  //returns false if an start point was added, or returns true if an start point was edited
-  public boolean editStartPoint(Location loc, int index) {
-    //todo
-    return false;
-  }
-  
   public void kickPlayer (UUID uuid) {
     players.get(uuid).quit();
     players.remove(uuid);
@@ -81,6 +74,20 @@ public class Event implements Listener {
   public HashMap<UUID, EventPlayer> getPlayers() {
     return players;
   }
+  
+  //returns false if an start point was added, or returns true if an start point was edited
+  public boolean setStartPoints(Location loc, int...index) {
+    --index[0]; //player counts from 1, Java from 0
+    if (startPoints.size()>index[0]) {
+      startPoints.set(index[0], loc);
+      return true;
+    } else {
+      startPoints.add(loc);
+      return false;
+    }
+  }
+  
+  public void start() {}
   public void setSurface(ProtectedRegion rg) {}
   public void setSurfaceMaterial(Material m) {}
   public void setStartInventory(Inventory inv) {
@@ -117,7 +124,7 @@ public class Event implements Listener {
   public Inventory getStartingInventory() {
     return startInventory;
   }
-  public Location[] getStartPoints() {
+  public ArrayList<Location> getStartPoints() {
     return startPoints;
   }
   public Location getLobby() {

@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Utils.Msg;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -23,7 +25,7 @@ public class SpleefEvent extends Event {
   
   public EventStatus getStatus() {
     if (status == EventStatus.NOT_READY) {
-      if (lobby != null && startPoints != null && surface != null && minY >= 0)
+      if (lobby != null && startPoints != null && surface != null && minY >= 0 && surfaceMaterial != null)
         status = EventStatus.READY;
     }
     return status;
@@ -80,11 +82,12 @@ public class SpleefEvent extends Event {
 }
 
   public void startArena() {
-    //giving equipment to players
-    //teleport players to start points
-    //setting surface
-    //etc
-    
+    plugin.getData().giveEventInventory(startInventory);
+    plugin.getData().teleportToStartLocation(startPoints);
+  }
+  
+  public void setSurface() {
+    //
   }
   
   @Override
@@ -95,7 +98,7 @@ public class SpleefEvent extends Event {
     else
       sender.sendMessage(Msg.get("lobby", false, Msg.get("error_check", false)));
     if (startPoints != null)
-      sender.sendMessage(Msg.get("start_points", false, Msg.get("check", false), Integer.toString(startPoints.length)));
+      sender.sendMessage(Msg.get("start_points", false, Msg.get("check", false), Integer.toString(startPoints.size())));
     else
       sender.sendMessage(Msg.get("start_points", false, Msg.get("error_check", false), Msg.get("none", false)));
     if (surface != null && surfaceMaterial != null) {
@@ -123,8 +126,18 @@ public class SpleefEvent extends Event {
   
   @EventHandler
   public void onPlayerMove(PlayerMoveEvent e) {
-    if (e.getPlayer().getLocation().getY() < minY) {
+    if (e.getPlayer().getLocation().getY() < minY && players.containsKey(e.getPlayer().getUniqueId())) {
       super.kickPlayer(e.getPlayer().getUniqueId());
+      if (players.keySet().size() == 1) {
+        for (EventPlayer pl : players.values()) {
+          pl.won(name);
+        }
+      }
     }
+  }
+  @EventHandler
+  public void onPlayerQuit(PlayerQuitEvent e) {
+    if (players.containsKey(e.getPlayer().getUniqueId()))
+      players.get(e.getPlayer().getUniqueId()).quit();
   }
 }
