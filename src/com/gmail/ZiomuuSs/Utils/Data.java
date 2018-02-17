@@ -48,7 +48,7 @@ public class Data {
     for (UUID uuid : inProgress.getPlayers().keySet()) {
       Player player = Bukkit.getPlayer(uuid);
       if (player != null)
-        player.getInventory().setContents(inv.getContents());;
+        player.getInventory().setContents(inv.getContents());
     }
   }
   

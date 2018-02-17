@@ -90,9 +90,14 @@ public class SpleefEvent extends Event {
     //
   }
   
+  public void setMinY(int miny) {
+    this.minY = miny;
+  }
+  
   @Override
   public void showRequiments(CommandSender sender) {
     sender.sendMessage(Msg.get("show_requiments", false, name));
+    sender.sendMessage(Msg.get("type", true, "SPLEEF"));
     if (lobby != null)
       sender.sendMessage(Msg.get("lobby", false, Msg.get("check", false), Msg.get("coordinates", false, Integer.toString(lobby.getBlockX()), Integer.toString(lobby.getBlockY()), Integer.toString(lobby.getBlockZ()), lobby.getWorld().toString())));
     else
@@ -114,6 +119,7 @@ public class SpleefEvent extends Event {
       sender.sendMessage(Msg.get("miny", false, Integer.toString(minY)));
     else
       sender.sendMessage(Msg.get("miny", false, Msg.get("error_check", false)));
+    sender.sendMessage(Msg.get("status", true, getStatus().toString()));
     
   }
   

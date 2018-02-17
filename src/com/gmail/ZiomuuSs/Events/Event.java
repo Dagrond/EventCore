@@ -76,11 +76,16 @@ public class Event implements Listener {
   }
   
   //returns false if an start point was added, or returns true if an start point was edited
-  public boolean setStartPoints(Location loc, int...index) {
-    --index[0]; //player counts from 1, Java from 0
-    if (startPoints.size()>index[0]) {
-      startPoints.set(index[0], loc);
-      return true;
+  public boolean setStartPoints(Location loc, int index) {
+    if (index > 0) {
+      --index; //player counts from 1, Java from 0
+      if (startPoints.size()>= index+1) {
+        startPoints.set(index, loc);
+        return true;
+      } else {
+        startPoints.add(loc);
+        return false;
+      }
     } else {
       startPoints.add(loc);
       return false;
@@ -96,6 +101,7 @@ public class Event implements Listener {
   public boolean isRequired (REQUIMENT r) {
     return false;
   }
+  public void setMinY(int miny) {}
   public void setMaxPlayers(int mp) {
     maxPlayers = mp;
   }

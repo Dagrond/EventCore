@@ -64,11 +64,7 @@ public class EventCoreCommand implements CommandExecutor {
           if (sender.hasPermission("eventcore.admin")) {
             if (args.length == 2 || args.length > 2 && args[2].equalsIgnoreCase("info")) {
               if (data.isExist(args[1])) {
-                //displaying info about event
-                Event e = data.getEvent(args[1]);
-                sender.sendMessage(Msg.get("show_info", false));
-                sender.sendMessage(Msg.get("status", false, e.getMode().toString()));
-                sender.sendMessage(Msg.get("min_max_players", false, Integer.toString(e.getMinPlayers()), (e.getMaxPlayers() > 0 ? Integer.toString(e.getMaxPlayers()) : Msg.get("no_limit", false))));
+                data.getEvent(args[1]).showRequiments(sender);
                 return true;
               } else {
                 sender.sendMessage(Msg.get("error_event_not_exist", true, args[1]));
@@ -242,6 +238,31 @@ public class EventCoreCommand implements CommandExecutor {
                         sender.sendMessage(Msg.get("error_parameter_match", true, "INVENTORY", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
+                    } else if (args[3].equalsIgnoreCase("miny")) {
+                      if (data.getEvent(args[1]).isRequired(REQUIMENT.MINY)) {
+                        if (args.length>4) {
+                          if (args[4].matches("-?\\d+")) {
+                            int min =  Integer.valueOf(args[4]);
+                            if (min>0 && min< 255) {
+                              data.getEvent(args[1]).setMinY(min);
+                              sender.sendMessage(Msg.get("miny_set", true, args[4]));
+                              return true;
+                            } else {
+                              sender.sendMessage(Msg.get("error_must_be_beetween", true, "minPlayers", "0", "255"));
+                              return true;
+                            }
+                          } else {
+                            sender.sendMessage(Msg.get("error_must_be_integer", true, "minPlayers"));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set minplayers <arg>"));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_parameter_match", true, "MINY", data.getEvent(args[1]).getMode().toString()));
+                        return true;
+                      }
                     }
                   } else {
                     sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set (arg)"));
@@ -269,18 +290,20 @@ public class EventCoreCommand implements CommandExecutor {
               } else if (args[2].equalsIgnoreCase("startpoint")) {
                 if (sender instanceof Player) {
                   if (data.getEvent(args[1]).isRequired(REQUIMENT.STARTPOINTS)) {
-                    if (args[3].matches("-?\\d+")) {
+                    if (args.length > 3 && args[3].matches("-?\\d+")) {
                       int index = Integer.valueOf(args[3]);
                       if (index>0) {
-                        data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation(), index);
-                        sender.sendMessage(Msg.get("startpoint_setted", true, Integer.toString(index), Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
+                        if (data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation(), index))
+                          sender.sendMessage(Msg.get("startpoint_setted", true, Integer.toString(index), Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
+                        else
+                          sender.sendMessage(Msg.get("startpoint_added", true, Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
                         return true;
                       } else {
                         sender.sendMessage(Msg.get("error_must_be_greater_than", true, "startPoint", "0"));
                         return true;
                       }
                     } else {
-                      data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation());
+                      data.getEvent(args[1]).setStartPoints(((Player) sender).getLocation(), 0);
                       sender.sendMessage(Msg.get("startpoint_added", true, Integer.toString(data.getEvent(args[1]).getStartPoints().size())));
                       return true;
                     }

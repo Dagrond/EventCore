@@ -53,7 +53,7 @@ public class EventPlayer {
       player.setLevel(lvl);
       player.teleport(loc);
       player.sendMessage(Msg.get("error_event_lose", true));
-      data.broadcastToEventPlayers(Msg.get("", true, player.getDisplayName(), Integer.toString(data.getPlayerAmount())));
+      data.broadcastToEventPlayers(Msg.get("player_leave", true, player.getDisplayName(), Integer.toString(data.getPlayerAmount())));
       return true;
     } else {
       return false;
