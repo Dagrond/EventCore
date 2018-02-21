@@ -263,6 +263,41 @@ public class EventCoreCommand implements CommandExecutor {
                         sender.sendMessage(Msg.get("error_parameter_match", true, "MINY", data.getEvent(args[1]).getMode().toString()));
                         return true;
                       }
+                    } else if (args[3].equalsIgnoreCase("reward")) {
+                      if (args.length > 5) {
+                        if (args[4].equalsIgnoreCase("money")) {
+                          if (args[5].matches("(-?\\\\d+(\\\\.\\\\d+)?)(?:\\\\s(-?\\\\d+(\\\\.\\\\d+)?)){2}")) {
+                            data.getEvent(args[1]).getReward().setMoney(Double.valueOf(args[5]));
+                            sender.sendMessage(Msg.get("reward_money_set", true, args[1], args[5]));
+                            return true;
+                          } else {
+                            sender.sendMessage(Msg.get("error_must_be_double", true));
+                            return true;
+                          }
+                        } else if (args[4].equalsIgnoreCase("level")) {
+                          if (args[5].matches("-?\\d+")) {
+                            data.getEvent(args[1]).getReward().setLevel(Integer.valueOf(args[5]));;
+                            sender.sendMessage(Msg.get("reward_level_set", true, args[1], args[5]));
+                            return true;
+                          } else {
+                            sender.sendMessage(Msg.get("error_must_be_integer", true, "level"));
+                            return true;
+                          }
+                        } else if (args[4].equalsIgnoreCase("item")) {
+                          if (sender instanceof Player) {
+                            //todo
+                          } else {
+                            sender.sendMessage(Msg.get("error_player_required", true));
+                            return true;
+                          }
+                        } else {
+                          sender.sendMessage(Msg.get("error_reward_type", true, "money, level, item"));
+                          return true;
+                        }
+                      } else {
+                        sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set reward <reward_type> <amount/action>"));
+                        return true;
+                      }
                     }
                   } else {
                     sender.sendMessage(Msg.get("error_use", true, "/ce e <event> set (arg)"));
@@ -328,9 +363,14 @@ public class EventCoreCommand implements CommandExecutor {
           if (sender instanceof Player) {
             if (data.getEventInProgress() != null || data.getEventInProgress().getStatus() != EventStatus.IN_LOBBY) {
               if (data.isInEvent(((Player) sender)) == false) {
-                data.addPlayerToEvent(((Player) sender));
-                sender.sendMessage(Msg.get("event_join", true, data.getEventInProgress().toString()));
-                return true;
+                if (data.getEvent(args[1]).getPlayers().size() <= data.getEvent(args[1]).getMaxPlayers()) {
+                  data.addPlayerToEvent(((Player) sender));
+                  sender.sendMessage(Msg.get("event_join", true, data.getEventInProgress().toString()));
+                  return true;
+                } else {
+                  sender.sendMessage(Msg.get("error_max_players_reached", true));
+                  return true;
+                }
               } else {
                 sender.sendMessage(Msg.get("error_already_in_event", true));
                 return true;

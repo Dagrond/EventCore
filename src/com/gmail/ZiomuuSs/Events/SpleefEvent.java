@@ -73,9 +73,14 @@ public class SpleefEvent extends Event {
       @Override
       public void run() {
         if (status == EventStatus.IN_LOBBY) {
-          Bukkit.broadcastMessage(Msg.get("event_started_broadcast", true, name));
-          status = EventStatus.IN_PROGRESS;
-          startArena();
+          if (players.size()>=minPlayers) {
+            Bukkit.broadcastMessage(Msg.get("event_started_broadcast", true, name));
+            status = EventStatus.IN_PROGRESS;
+            startArena();
+          } else {
+            Bukkit.broadcastMessage(Msg.get("error_not_enough_players", true, name));
+            status = EventStatus.READY;
+          }
         }
       }
     }, 20*delay);
@@ -145,5 +150,10 @@ public class SpleefEvent extends Event {
   public void onPlayerQuit(PlayerQuitEvent e) {
     if (players.containsKey(e.getPlayer().getUniqueId()))
       players.get(e.getPlayer().getUniqueId()).quit();
+    if (players.keySet().size() == 1) {
+      for (EventPlayer pl : players.values()) {
+        pl.won(name);
+      }
+    }
   }
 }

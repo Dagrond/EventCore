@@ -68,6 +68,7 @@ public class EventPlayer {
       player.setLevel(lvl);
       player.teleport(loc);
       player.sendMessage(Msg.get("event_won", true));
+      data.getEvent(name).getReward().grant(player);
       Bukkit.broadcastMessage(Msg.get("event_end", true, player.getDisplayName(), name));
       return true;
     } else {

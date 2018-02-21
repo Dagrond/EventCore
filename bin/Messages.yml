@@ -44,6 +44,13 @@ event_end: "Event %2 zostal zakonczony! Wygral gracz %1!"
 player_leave: "Gracz %1 odpadl z eventu! Pozostalo %2 graczy."
 startpoint_added: "Punkt startu zostal dodany! (Ilosc punktow startowych: %1)"
 startpoint_setted: "Lokalizacja punktu startu nr. %1 zostala zmieniona! (Ilosc punktow startowych: %2)"
+gived_and_dropped_items: "Otrzymales %1 przedmiotow jako nagrode za wygranie eventu! %2 przedmiotow nie zmiescilo sie w Twoim ekwipunku i zostalo wyrzuconych na ziemie."
+gived_items: "Otrzymales %1 przedmiotow jako nagrode za wygranie eventu!"
+gived_dropped_items: "Nie masz odpowiedniej ilosci miejsca w ekwipunku aby otrzymac nagrode za event! %1 przedmiotow zostalo wyrzuconych na ziemie."
+gived_money: "Otrzymales %1$ jako nagrode za event!"
+gived_level: "Otrzymales %1 poziomow jako nagrode za event!"
+reward_money_set: "Pomyslnie ustawiles nagrode eventu %1 na %2$"
+reward_level_set: "Pomyslnie ustawiles nagrode eventu %1 na %2 leveli"
 
 #error messages
 error_event_already_exist: "Event o nazwie %1 juz istnieje!"
@@ -67,6 +74,10 @@ error_already_in_event: "Jestes juz w evencie! Aby opuscic event wpisz %s/e leav
 error_must_be_positive: "Parametr %1 musi byc dodatni lub rowny 0!"
 error_event_quit: "Wyszedles z eventu %1!"
 error_event_lose: "Przegrales! Powodzenia nastepnym razem."
+error_not_enough_players: "Event %1 nie mogl sie rozpoczac poniewaz dolaczylo do niego zbyt malo graczy!"
+error_max_players_reached: "Nie mozna dolaczyc do eventu, poniewaz osiagnieto maksymalna ilosc graczy!"
+error_reward_type: "Nieprawidlowy typ nagrody! Prawidlowe typy nagrody to: %1"
+error_must_be_double: "Pieniadze musza byc wyrazone w liczbie calkowitej lub przecinkowej!"
 
 #help pages
 help: "Pomoc pluginu %sEventCore%n:"

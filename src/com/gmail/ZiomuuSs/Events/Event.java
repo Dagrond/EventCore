@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
+import com.gmail.ZiomuuSs.Reward;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class Event implements Listener {
@@ -48,6 +49,7 @@ public class Event implements Listener {
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers; //max players in event
+  protected Reward reward; //reward for winner(s)
   protected int minPlayers; //min amount of players to start event
   protected EventStatus status; //Status of event (lobby(players are in lobby, event will start soon)/during(event is in progress)/off(event disabled to use or not ready to use)/free(there is not event))
   protected int delay; //amount of time in seconds after event will start (change it's status from "lobby" to "during"). Can be bypassed by command or if StartWhenMax=true
@@ -101,12 +103,18 @@ public class Event implements Listener {
   public boolean isRequired (REQUIMENT r) {
     return false;
   }
+  public Reward getReward() {
+    return reward;
+  }
   public void setMinY(int miny) {}
   public void setMaxPlayers(int mp) {
     maxPlayers = mp;
   }
   public void setMinPlayers(int mp) {
     minPlayers = mp;
+  }
+  public int getMinPlayes() {
+    return minPlayers;
   }
   @Override
   public String toString() {
