@@ -180,7 +180,7 @@ public class EventCoreCommand implements CommandExecutor {
                         if (sender instanceof Player) {
                           if (args.length>4) {
                             if (data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]) != null) {
-                              data.getEvent(args[1]).setSurface(data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]));
+                              data.getEvent(args[1]).setSurface(data.getWorldGuard().getRegionManager(((Player) sender).getWorld()).getRegion(args[4]), ((Player) sender).getWorld());
                               sender.sendMessage(Msg.get("region_set", true, args[4]));
                               return true;
                             } else {

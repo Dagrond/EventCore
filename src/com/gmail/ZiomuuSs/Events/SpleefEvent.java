@@ -2,6 +2,7 @@ package com.gmail.ZiomuuSs.Events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -10,12 +11,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Utils.Msg;
+import com.sk89q.worldedit.BlockVector2D;
+import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class SpleefEvent extends Event {
   
   protected ProtectedRegion surface;
   protected Material surfaceMaterial;
+  protected World surfaceWorld;
   protected int minY = -1;
   
   public SpleefEvent(String name, Main plugin) {
@@ -34,8 +38,9 @@ public class SpleefEvent extends Event {
   public void setSurfaceMaterial(Material m) {
     surfaceMaterial = m;
   }
-  public void setSurface(ProtectedRegion rg) {
+  public void setSurface(ProtectedRegion rg, World world) {
     surface = rg;
+    surfaceWorld = world;
   }
   
   @Override
@@ -92,7 +97,7 @@ public class SpleefEvent extends Event {
   }
   
   public void setSurface() {
-    //
+    //todo
   }
   
   public void setMinY(int miny) {

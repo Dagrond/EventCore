@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
@@ -95,7 +96,7 @@ public class Event implements Listener {
   }
   
   public void start() {}
-  public void setSurface(ProtectedRegion rg) {}
+  public void setSurface(ProtectedRegion rg, World world) {}
   public void setSurfaceMaterial(Material m) {}
   public void setStartInventory(Inventory inv) {
     startInventory = inv;
