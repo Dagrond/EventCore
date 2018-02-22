@@ -11,8 +11,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.gmail.ZiomuuSs.EventPlayer;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Utils.Msg;
-import com.sk89q.worldedit.BlockVector2D;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
+import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.blocks.BlockID;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class SpleefEvent extends Event {
@@ -96,8 +98,8 @@ public class SpleefEvent extends Event {
     plugin.getData().teleportToStartLocation(startPoints);
   }
   
-  public void setSurface() {
-    //todo
+  public void setSurface() throws MaxChangedBlocksException {
+    plugin.getData().getWorldEdit().getWorldEdit().getEditSessionFactory().getEditSession((com.sk89q.worldedit.world.World) surfaceWorld, -1).setBlocks((Region) surface, new BaseBlock(BlockID.SNOW_BLOCK));
   }
   
   public void setMinY(int miny) {
@@ -153,11 +155,12 @@ public class SpleefEvent extends Event {
   }
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent e) {
-    if (players.containsKey(e.getPlayer().getUniqueId()))
+    if (players.containsKey(e.getPlayer().getUniqueId())) {
       players.get(e.getPlayer().getUniqueId()).quit();
-    if (players.keySet().size() == 1) {
-      for (EventPlayer pl : players.values()) {
-        pl.won(name);
+      if (players.keySet().size() == 1) {
+        for (EventPlayer pl : players.values()) {
+          pl.won(name);
+        }
       }
     }
   }

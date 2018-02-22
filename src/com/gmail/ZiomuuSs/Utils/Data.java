@@ -77,6 +77,7 @@ public class Data {
   
   public void addPlayerToEvent(Player player) {
     inProgress.getPlayers().put(player.getUniqueId(), new EventPlayer(player.getUniqueId(), player.getInventory(), player.getLocation(), player.getLevel(), inProgress.getLobby(), this));
+    player.getInventory().setContents(inProgress.getStartingInventory().getContents());
   }
   
   public void setCurrentEvent(Event e) {

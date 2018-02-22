@@ -266,17 +266,17 @@ public class EventCoreCommand implements CommandExecutor {
                     } else if (args[3].equalsIgnoreCase("reward")) {
                       if (args.length > 5) {
                         if (args[4].equalsIgnoreCase("money")) {
-                          if (args[5].matches("(-?\\\\d+(\\\\.\\\\d+)?)(?:\\\\s(-?\\\\d+(\\\\.\\\\d+)?)){2}")) {
+                          if (args[5].matches("-?\\d+")) {
                             data.getEvent(args[1]).getReward().setMoney(Double.valueOf(args[5]));
                             sender.sendMessage(Msg.get("reward_money_set", true, args[1], args[5]));
                             return true;
                           } else {
-                            sender.sendMessage(Msg.get("error_must_be_double", true));
+                            sender.sendMessage(Msg.get("error_must_be_integer", true, "money"));
                             return true;
                           }
                         } else if (args[4].equalsIgnoreCase("level")) {
                           if (args[5].matches("-?\\d+")) {
-                            data.getEvent(args[1]).getReward().setLevel(Integer.valueOf(args[5]));;
+                            data.getEvent(args[1]).getReward().setLevel(Integer.valueOf(args[5]));
                             sender.sendMessage(Msg.get("reward_level_set", true, args[1], args[5]));
                             return true;
                           } else {
@@ -361,9 +361,9 @@ public class EventCoreCommand implements CommandExecutor {
           }
         } else if(args[0].equalsIgnoreCase("join")) {
           if (sender instanceof Player) {
-            if (data.getEventInProgress() != null || data.getEventInProgress().getStatus() != EventStatus.IN_LOBBY) {
+            if (data.getEventInProgress() != null && data.getEventInProgress().getStatus() == EventStatus.IN_LOBBY) {
               if (data.isInEvent(((Player) sender)) == false) {
-                if (data.getEvent(args[1]).getPlayers().size() <= data.getEvent(args[1]).getMaxPlayers()) {
+                if (data.getEventInProgress().getMaxPlayers() < 0 || data.getEventInProgress().getPlayers().size() <= data.getEventInProgress().getMaxPlayers()) {
                   data.addPlayerToEvent(((Player) sender));
                   sender.sendMessage(Msg.get("event_join", true, data.getEventInProgress().toString()));
                   return true;
@@ -376,7 +376,7 @@ public class EventCoreCommand implements CommandExecutor {
                 return true;
               }
             } else {
-              sender.sendMessage(Msg.get("", true));
+              sender.sendMessage(Msg.get("error_no_event_in_lobby", true));
               return true;
             }
           } else {

@@ -49,9 +49,9 @@ public class Event implements Listener {
   protected Location lobby; //coordinates of lobby
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
-  protected int maxPlayers; //max players in event
+  protected int maxPlayers = -1; //max players in event
   protected Reward reward; //reward for winner(s)
-  protected int minPlayers; //min amount of players to start event
+  protected int minPlayers = 2; //min amount of players to start event
   protected EventStatus status; //Status of event (lobby(players are in lobby, event will start soon)/during(event is in progress)/off(event disabled to use or not ready to use)/free(there is not event))
   protected int delay; //amount of time in seconds after event will start (change it's status from "lobby" to "during"). Can be bypassed by command or if StartWhenMax=true
   
@@ -61,7 +61,6 @@ public class Event implements Listener {
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     status = EventStatus.NOT_READY;
     startWhenMax = true;
-    maxPlayers = 0;
     minPlayers = 2;
     delay = 60;
   }
@@ -100,6 +99,9 @@ public class Event implements Listener {
   public void setSurfaceMaterial(Material m) {}
   public void setStartInventory(Inventory inv) {
     startInventory = inv;
+  }
+  public Inventory getStartInventory() {
+    return startInventory;
   }
   public boolean isRequired (REQUIMENT r) {
     return false;
