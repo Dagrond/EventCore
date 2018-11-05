@@ -1,8 +1,15 @@
 name: EventCore
 main: com.gmail.ZiomuuSs.Main
 version: 0.1
+api-version: 1.13
+author: Dagrond
+softdepend: [Multiverse-Core, WorldGuard, WorldEdit, CombatLogX, AuthMe, ChatItem, MyItems]
 commands:
    EventCore:
       aliases: [ce]
       description: Glowna komenda.
       usage: /ce
+   Event:
+      aliases: [e]
+      description: Eventy.
+      usage: /e

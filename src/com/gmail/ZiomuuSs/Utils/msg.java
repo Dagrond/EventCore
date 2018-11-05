@@ -1,0 +1,67 @@
+package com.gmail.ZiomuuSs.Utils;
+
+import org.bukkit.ChatColor;
+
+public enum msg {
+  ERROR_PERMISSION("&5[&6Event&5] &cNie posiadasz odpowiednich uprawnieñ aby u¿yæ tej komendy!"),
+  ERROR_CANNOT_DO_THAT_HERE("&5[&6Event&5] &cNie mo¿esz tego tutaj zrobiæ."),
+  ERROR_USAGE("&5[&6Event&5] &cU¿ycie: &c&l%1"),
+  ERROR_MUST_BE_PLAYER("&5[&6Event&5] &cNie mo¿na tego dokonaæ z poziomu konsoli!"),
+  ERROR_EVENT_TYPE_NOT_EXIST("&5[&6Event&5] &cEvent typu &c&l%1&r&c nie istnieje! Listê wszystkich typów sprawdzisz pod &c&l/ce types&r&c."),
+  ERROR_EVENT_NOT_EXIST("&5[&6Event&5] &cEvent typu &c&l%1&r&c o nazwie &c&l%2&r&c nie istnieje! SprawdŸ listê dostêpnych eventów danego typu pod &c&l/e list (typ)&r&c."),
+	ERROR_ALREADY_IN_LOBBY("&5[&6Event&5] &cJesteœ ju¿ w lobby! Aby wyjœæ, wpisz &c&l/e wyjdz&r&c."),
+	ERROR_ALREADY_IN_EVENT("&5[&6Event&5] &cJesteœ ju¿ na evencie! Aby wyjœæ, wpisz &c&l/e wyjdz&r&c lub &c&l/e lobby&r&c."),
+	ERROR_COMBAT("&5[&6Event&5] &cNie mo¿esz do³¹czyæ do lobby eventów, poniewa¿ jesteœ w trakcie walki!"),
+	ERROR_ALREADY_IN_PROGRESS("&5[&6Event&5] &cNie mo¿na wystartowaæ eventu, poniewa¿ jakiœ ju¿ trwa!"),
+	ERROR_NOT_IN_LOBBY("&5[&6Event&5] &cNie jesteœ w lobby! Aby do³¹czyæ do lobby, wpisz &c&l/e lobby&r&c."),
+	ERROR_LOAD_NOT_CONFIGURED("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Brakuj¹ca opcja: &c&l%3"),
+	ERROR_LOAD_WORLD_NOT_EXIST("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Œwiat &c&l%3 &r&cnie istnieje!"),
+	ERROR_LOAD_NO_REGIONS("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: nie znaleziono ¿adnych regionów!"),
+	ERROR_LOAD_NO_STARTPOINTS("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: nie znaleziono ¿adnych punktów startowych!"),
+	ERROR_LOAD_NO_SUCH_TEAMOPTION("&5[&6Event&5] &cNie mo¿na za³adowaæ opcji &c&l\"%1\"&r&c w evencie &c&l%2 &r&ctypu &c&l%3&r&c: ta opcja mo¿e przyjmowaæ tylko wartoœci: &c&lALWAYS&r&c, &c&lNEVER&r&c, &c&lFOR_OTHER_TEAMS&r&coraz &c&lFOR_OWN_TEAM&r&c. Pomijam..."),
+	ERROR_LOAD_MATERIAL_NOT_EXIST("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Materia³ &c&l%3 &r&cnie istnieje!"),
+	ERROR_LOAD_MATERIAL_NOT_SOLID("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Materia³ &c&l%3 &r&cnie jest solidny!"),
+	ERROR_LOAD_BAD_STARTPOINT("&5[&6Event&5] &cNie mo¿na za³adowaæ punktu startowego &c&l\"%1\"&r&c w evencie &c&l%2 &r&ctypu &c&l%3&r&c: lokacja musi siê sk³adaæ z 3 koordynatów: &c&lx&r&c, &c&ly &r&coraz &c&lz&r&c. Pomijam..."),
+	ERROR_LOAD_PLUGIN_NOT_FOUND("&5[&6Event&5] &cNie znaleziono pluginu &c&l%1&r&c! Czêœæ funkcji nie bêdzie dzia³aæ."),
+	ERROR_LOAD_CANNOT_LOAD_EVENT_NO_PLUGIN_FOUND("&5[&6Event&5] &cNie mo¿na za³adowaæ eventów typu &c&l%1&4&c, poniewa¿ nie znaleziono wymaganego pluginu(ów): %2"),
+	ERROR_LOAD_REGION_NOT_EXIST("&5[&6Event&5] &cNie mo¿na za³adowaæ regionu &c&l%1 &r&cw œwiecie &c&l%2&r&cdla eventu &c&l%3&r&c typu &c&l%4&r&c, pomijam..."),
+	ERROR_STARTING_CANCELLED("&5[&6Event&5] &cEvent &c&l%1&r&c zosta³ przerwany!"),
+	ERROR_WORLDGUARD_API_NOT_RESPONDING("&5[&6Event&5] &cEvent &c&l%1&r&c typu &c&l%2 &r&cnie zosta³ za³adowany: API WorldGuarda nie odpowiada!"),
+	ERROR_STARTING_NOT_ENOUGH_PLAYERS("&5[&6Event&5] &cEvent &c&l%1&r&c nie rozpocznie siê, poniewa¿ w lobby znajduje siê zbyt ma³a iloœæ graczy :( (&c&l%2&r&c/&c&l%3&r&c)"),
+	COUTDOWN("&5[&6Event&5] &a&l%1 &r&arozpocznie siê za %2 sekund!"),
+	LOADED("&5[&6Event&5] &aZa³adowano &a&l%1 &r&aevent(ów)! W tym: &a&l%2"),
+	INFO_TIP("&5[&6Event&5] &aNie wiesz na czym polega ten event? Wpisz &a&l/e info&r&a."),
+	LOBBY_JOINED("&5[&6Event&5] &aPomyœlnie do³¹czy³eœ do lobby."),
+  LOBBY_LEAVE("&5[&6Event&5] &aPomyœlnie opuœci³eœ lobby."),
+  LOBBY_INVITE("&5[&6Event&5] &aZa &a&l%1 &r&asekund rozpoczyna siê event! Wpisz &a&l/e lobby &r&aaby do niego do³¹czyæ."),
+  LOBBY_LOCATION_SET("&5[&6Event&5] &aPomyœlnie ustawi³eœ punkt spawnu lobby na Twojej pozycji!"),
+  SPECTATOR_TIP("&5[&6Event&5] &aWpisz &a&l/e spec &r&aaby obserwowaæ event."),
+  BACK_TO_LOBBY("&5[&6Event&5] Pomyœlnie powróci³eœ do lobby."),
+  EVENT_LEAVE("&5[&6Event&5] &aPomyœlnie opuœci³eœ event."),
+  REWARD_INFO("&5[&6Event&5] &aWpisz &l&a/e nagrody &r&aaby wyœwietliæ nagrody za wygranie tego eventu"),
+  REWARD_ADDED("&5[&6Event&5] &aOtrzyma³eœ nagrodê za udzia³ w evencie! Odbierz j¹ wpisuj¹c &a&l/e nagroda&r&a."),
+  REWARD_NOTIFICATION("&5[&6Event&5] &aMasz nieodebrane nagrody! Odbierz je wpisuj¹c &a&l/e nagroda&r&a. Nieodebrane nagrody usuwaj¹ siê po 3 dniach."),
+  REWARD_OPENED("&5[&6Event&5] &aOtworzono menu odbierania nagród."),
+  REWARD_NO_REWARDS("&5[&6Event&5] &cNie posiadasz ¿adnych nagród do odebrania!"),
+  REWARD_CLAIMED("&5[&6Event&5] &aDziêkujemy za odebranie wszystkich nagród!"),
+  REWARD_NOT_ALL_CLAIMED("&5[&6Event&5] &cUWAGA! Nie odebra³eœ wszystkich nagród. Nieodebrane nagrody s¹ usuwane po 3 dniach od ich otrzymania."),
+  REWARD_NOT_IN_LOBBY("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ lobby komend¹ &c&l/e wyjdz&r&c."),
+  REWARD_NOT_IN_EVENT("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ event komend¹ &c&l/e wyjdz&r&c."),
+  EVENT_STARTING_SOON("&5[&6Event&5] &aEvent &a&l%1 &r&a(&a&l%2&r&a) rozpocznie siê za &a&l%3&r&a sekund! Wpisz &a&l/e lobby &r&aaby do niego do³¹czyæ."),
+  EVENT_PLAYER_LEAVED("&5[&6Event&5] &aGracz &a&l%1 &r&aopuœci³ event! Pozosta³o &a&l%2&r&a graczy."),
+  STARTED("&5[&6Event&5] &aPomyœlnie zacz¹³eœ event &a&l%1 &r&atypu &a&l%2&r&a!");
+  
+  private String message;
+  msg(String message) {
+    this.message = message;
+  }
+  
+  public String get(String...args) {
+  	String temp = message;
+    for (int i = 0; i<args.length; i++) {
+      temp = temp.replaceAll("%"+(i+1), args[i]);
+    }
+  return ChatColor.translateAlternateColorCodes('&', temp);
+  }
+}
+
