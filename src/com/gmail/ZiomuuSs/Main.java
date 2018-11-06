@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.ZiomuuSs.Commands.EventCommand;
 import com.gmail.ZiomuuSs.Commands.EventCoreCommand;
-import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Utils.msg;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 

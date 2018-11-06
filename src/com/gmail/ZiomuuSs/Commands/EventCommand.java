@@ -35,9 +35,9 @@ public class EventCommand implements CommandExecutor {
 		    		  	return true;
 	    		  	}
 	    		  	Event e = EventQueue.getCurrent(); //no need to check if null cuz EventPlayer will never pass when EventQueue.getCurrent() returns null
-	    		  	e.removePlayer(uuid);
+	    		  	e.removePlayer(uuid, true);
 	    		  	e.announceLeaved(uuid);
-	    		  	
+	    		  	player.sendMessage("");
 	    		  	
 	    		  } else if (EventPlayer.isInLobby(uuid)) {
 	    		  	

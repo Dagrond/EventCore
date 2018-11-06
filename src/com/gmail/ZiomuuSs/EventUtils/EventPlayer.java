@@ -1,25 +1,31 @@
 package com.gmail.ZiomuuSs.EventUtils;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Events.Event;
+import com.gmail.ZiomuuSs.Utils.ConfigAccessor;
 
 public class EventPlayer {
 	private static HashSet<UUID> savedPlayers = new HashSet<>(); //players that are saved in files, for performance better not search for player's file every join
+	private Main plugin;
 	private UUID uuid;
   private Location loc;
   private float exp;
@@ -33,13 +39,14 @@ public class EventPlayer {
   private ItemStack[] items;
   
   //for online players
-  public EventPlayer(Player player) {
+  public EventPlayer(Player player, Main plugin) {
   	//some bug prevention first
   	player.closeInventory();
   	player.getPassengers().clear();
   	player.getVehicle().getPassengers().clear();
   	//place for removing combat mode from player to prevent bugs
   	//then save player...
+  	this.plugin = plugin;
   	uuid = player.getUniqueId();
   	loc = player.getLocation();
   	exp = player.getExp();
@@ -63,11 +70,13 @@ public class EventPlayer {
   	player.getInventory().clear();
   	//and finally, teleport him
   	player.teleport(loc);
+  	save();
   }
   
   //for loading from files
-  public EventPlayer(UUID uuid, Location loc, float exp, double health, double maxHealth, float saturation, float hunger, GameMode gamemode, boolean fly, Collection<PotionEffect> potions, ItemStack[] items) {
-  	this.uuid = uuid;
+  public EventPlayer(Main plugin,UUID uuid, Location loc, float exp, double health, double maxHealth, float saturation, float hunger, GameMode gamemode, boolean fly, Collection<PotionEffect> potions, ItemStack[] items) {
+  	this.plugin = plugin;
+    this.uuid = uuid;
   	this.loc = loc;
   	this.exp = exp;
   	this.health = health;
@@ -142,6 +151,36 @@ public class EventPlayer {
   	}
   }
   
+  private void save() {
+    new File((new StringBuilder(plugin.getDataFolder().toString())
+        .append(String.valueOf(File.separatorChar))
+        .append("Players"))
+        .append(String.valueOf(File.separatorChar))
+        .append(new StringBuilder(uuid.toString()).append(".yml").toString()).toString()).delete();
+    ConfigAccessor ca = new ConfigAccessor(plugin, new StringBuilder(uuid.toString()).append(".yml").toString(), "Players");
+    ConfigurationSection cs = ca.getConfig();
+    cs.set("location.world", loc.getWorld().getName());
+    cs.set("location.x", loc.getX());
+    cs.set("location.y", loc.getY());
+    cs.set("location.z", loc.getZ());
+    cs.set("location.yaw", loc.getYaw());
+    cs.set("location.pitch", loc.getPitch());
+    cs.set("exp", exp);
+    cs.set("health", health);
+    cs.set("maxhealth", maxHealth);
+    cs.set("saturation", saturation);
+    cs.set("hunger", hunger);
+    cs.set("gamemode", gamemode.toString());
+    cs.set("fly", fly);
+    for (PotionEffect pe : potions) {
+      cs.set(new StringBuilder("potions.").append(pe).append(".type").toString(), pe.getType().toString());
+      cs.set(new StringBuilder("potions.").append(pe).append(".duration").toString(), Integer.toString(pe.getDuration()));
+      cs.set(new StringBuilder("potions.").append(pe).append(".amplifier").toString(), Integer.toString(pe.getAmplifier()));
+    }
+    cs.set("inventory", Arrays.asList(items));
+  }
+  
+  @SuppressWarnings("unchecked")
   public static EventPlayer load(UUID uuid, Main plugin) {
   	File f = new File((new StringBuilder(plugin.getDataFolder().toString())
   			.append(String.valueOf(File.separatorChar))
@@ -151,8 +190,13 @@ public class EventPlayer {
   	if (f.exists()) {
   		FileConfiguration fc = YamlConfiguration.loadConfiguration(f);
   		HashSet<PotionEffect> potions = new HashSet<>(); //TODO: loading potions
-  		ItemStack[] items; //TODO: loading items
-  		return new EventPlayer(uuid,
+  		for (String potion : fc.getConfigurationSection("potions").getKeys(false))
+  		  potions.add(new PotionEffect(PotionEffectType.getByName(fc.getString(new StringBuilder("potions.").append(potion).append(".type").toString())), fc.getInt(new StringBuilder("potions.").append(potion).append(".duration").toString()), fc.getInt(new StringBuilder("potions.").append(potion).append(".amplifier").toString())));
+  		HashSet<ItemStack> it = new HashSet<>();
+  		for(ItemStack item : (List<ItemStack>) fc.getList("inventory"))
+  		  it.add(item);
+  		ItemStack[] items = it.toArray(new ItemStack[it.size()]);
+  		return new EventPlayer(plugin, uuid,
   				new Location(Bukkit.getWorld(fc.getString("location.world")), fc.getDouble("location.x"), fc.getDouble("location.y"), fc.getDouble("location.z"), (float) fc.getDouble("location.yaw"), (float) fc.getDouble("location.pitch")),
   				(float) fc.getDouble("exp"),
   				fc.getDouble("health"),
@@ -166,5 +210,9 @@ public class EventPlayer {
   	}
   	return null;
   }
+  
+  public UUID getUUID() {
+    return uuid;
+  } 
   
 }

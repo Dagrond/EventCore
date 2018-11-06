@@ -37,6 +37,10 @@ public class EventQueue {
   	starting = e;
   }
   
+  public static Event getStarting() {
+    return starting;
+  }
+  
   public static Event getCurrent() {
   	return current;
   }

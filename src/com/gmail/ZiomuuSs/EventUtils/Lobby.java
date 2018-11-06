@@ -14,7 +14,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.gmail.ZiomuuSs.Main;
+import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Utils.ConfigAccessor;
+import com.gmail.ZiomuuSs.Utils.TimeUtilities;
+import com.gmail.ZiomuuSs.Utils.msg;
 
 public class Lobby {
 	private static HashMap<UUID, EventPlayer> players = new HashMap<>(); //players in lobby
@@ -67,6 +70,22 @@ public class Lobby {
 		return loc;
 	}
 	
+	public static String[] getMotd() {
+	  String[] message = new String[5];
+	  message[0] = msg.LOBBY_MESSAGE_HEADER.get();
+	  if (EventQueue.getCurrent() != null) {
+	    Event e = EventQueue.getCurrent();
+	    message[1] = msg.LOBBY_MESSAGE_CURRENT.get(e.getName(), e.getType().toString());
+	    message[2] = msg.LOBBY_MESSAGE_PLAYERS_IN_LOBBY.get(Integer.toString(players.size()));
+	    message[3] = msg.LOBBY_MESSAGE_TIME.get(TimeUtilities.formatTime(e.getStarted()));
+	    message[4] = msg.LOBBY_MESSAGE_SPECTATE_INVITE.get();
+	  } else if (EventQueue.getStarting() != null) {
+	  } else {
+	    
+	  }
+	  return message;
+	}
+	 
 	public static Collection<UUID> getPlayers() {
 		return players.keySet();
 	}

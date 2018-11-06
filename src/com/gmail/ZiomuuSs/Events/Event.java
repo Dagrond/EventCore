@@ -32,6 +32,7 @@ public class Event implements Listener {
   protected int maxPlayers = -1; //max players in event, when <0 unlimited
   protected int minPlayers = 2; //min amount of players to start event
   protected int delay = 60;
+  protected long started = 0L; //time in milis when this event was started
   protected String[] description = {"&cOpis tego eventu nie zosta³ ustawiony!",  "&cJeœli uwa¿asz to za b³¹d, zg³oœ to administratorowi serwera."}; //description of event
   //options for Teams
   protected Team.OptionStatus	nameTagVisibility = Team.OptionStatus.ALWAYS;
@@ -67,6 +68,10 @@ public class Event implements Listener {
   
 	public void startSequence() {}
   
+	public String getName() {
+	  return name;
+	}
+	
 	public Collection<UUID> getPlayers() {
 		return players.keySet();
 	}
@@ -111,6 +116,7 @@ public class Event implements Listener {
         	 EventQueue.setStarting(null);
         	 EventQueue.setCurrent(this);
         	 startSequence();
+        	 started = System.currentTimeMillis();
           },
         (t) -> {
           if (cancelled) {
@@ -128,6 +134,14 @@ public class Event implements Listener {
           	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
         });
     timer.scheduleTimer();
+  }
+  
+  public void stopSequence() {
+    started = 0L;
+  }
+  
+  public long getStarted() {
+    return started;
   }
   
   public void kickAll() {
