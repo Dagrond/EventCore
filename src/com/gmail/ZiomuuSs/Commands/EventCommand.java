@@ -11,6 +11,7 @@ import com.SirBlobman.combatlogx.utility.CombatUtil;
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.EventUtils.EventPlayer;
 import com.gmail.ZiomuuSs.EventUtils.EventQueue;
+import com.gmail.ZiomuuSs.EventUtils.Lobby;
 import com.gmail.ZiomuuSs.Events.Event;
 import com.gmail.ZiomuuSs.Utils.msg;
 
@@ -28,30 +29,43 @@ public class EventCommand implements CommandExecutor {
     		Player player = (Player) sender;
     		UUID uuid = player.getUniqueId();
 	    	if (args.length > 0) {
-	    		if (args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("loby") || args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("j") || args[0].equalsIgnoreCase("dolacz") || args[0].equalsIgnoreCase("d")) {
+	    		if (args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("j")) {
 	    		  if (EventPlayer.isInEvent(uuid)) {
-	    		  	if (!(args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("loby"))) {
-	    		  		player.sendMessage(msg.ERROR_ALREADY_IN_EVENT.get());
-		    		  	return true;
-	    		  	}
-	    		  	Event e = EventQueue.getCurrent(); //no need to check if null cuz EventPlayer will never pass when EventQueue.getCurrent() returns null
+	    		  	Event e = EventQueue.getCurrent();
 	    		  	e.removePlayer(uuid, true);
 	    		  	e.announceLeaved(uuid);
-	    		  	player.sendMessage("");
-	    		  	
+	    		  	player.sendMessage(Lobby.getMotd());
+	    		  	return true;
 	    		  } else if (EventPlayer.isInLobby(uuid)) {
-	    		  	
+	    		  	player.sendMessage(msg.ERROR_ALREADY_IN_LOBBY.get());
+	    		  	return true;
 	    		  }
 	    		  if (CombatUtil.isInCombat(player)) {
-	    		  	
+	    		  	player.sendMessage(msg.ERROR_COMBAT.get());
+	    		  	return true;
 	    		  }
-	    		} else if (args[0].equalsIgnoreCase("leave") || args[0].equalsIgnoreCase("l") || args[0].equalsIgnoreCase("w") || args[0].equalsIgnoreCase("wyjdz")) {
+	    		  Lobby.addPlayer(uuid, new EventPlayer(player, plugin, Lobby.getLocation()));
+	    		  player.sendMessage(Lobby.getMotd());
+	    		  return true;
+	    		} else if (args[0].equalsIgnoreCase("wyjdz") || args[0].equalsIgnoreCase("l")) {
+	    			if (EventPlayer.isInEvent(uuid)) {
+	    				Event e = EventQueue.getCurrent();
+	    		  	e.removePlayer(uuid, false);
+	    		  	e.announceLeaved(uuid);
+	    		  	player.sendMessage(msg.EVENT_LEAVE.get());
+	    			} else if (EventPlayer.isInLobby(uuid)) {
+	    				Lobby.getPlayer(uuid).restore();
+	    				Lobby.delPlayer(uuid);
+	    				player.sendMessage(msg.LOBBY_LEAVE.get());
+	    			} else {
+	    				player.sendMessage(msg.ERROR_EVENT_NOT_IN_EVENT_OR_LOBBY.get());
+	    			}
+	    			return true;
+	    		} else if (args[0].equalsIgnoreCase("info")) {
 	    			//TODO
-	    		} else if (args[0].equalsIgnoreCase("info") ) {
-	    			//TODO
-	    		} else if (args[0].equalsIgnoreCase("spectate") || args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("ogladaj") || args[0].equalsIgnoreCase("o")) {
+	    		} else if (args[0].equalsIgnoreCase("ogladaj") || args[0].equalsIgnoreCase("s")) {
 	    			
-	    		} else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("h") || args[0].equalsIgnoreCase("pomoc") || args[0].equalsIgnoreCase("p")) {
+	    		} else if (args[0].equalsIgnoreCase("pomoc") || args[0].equalsIgnoreCase("help")) {
 	    			
 	    		} else
 	    			sender.sendMessage(msg.ERROR_USAGE.get("/e pomoc"));

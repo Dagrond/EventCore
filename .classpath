@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/asd/libraries/spigot-api-latest.jar"/>
-	<classpathentry kind="lib" path="C:/asd/libraries/FastAsyncWorldEdit-bukkit-18.09.25-cfbf7db-2050.jar"/>
-	<classpathentry kind="lib" path="C:/asd/libraries/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
-	<classpathentry kind="lib" path="C:/asd/libraries/CombatLogX.jar"/>
-	<classpathentry kind="lib" path="C:/asd/libraries/ChatItem-1.3.6.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/spigot-api-latest.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/FastAsyncWorldEdit-bukkit-18.09.25-cfbf7db-2050.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/CombatLogX.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/ChatItem-1.3.6.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

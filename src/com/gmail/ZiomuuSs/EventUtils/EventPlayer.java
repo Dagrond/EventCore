@@ -39,7 +39,7 @@ public class EventPlayer {
   private ItemStack[] items;
   
   //for online players
-  public EventPlayer(Player player, Main plugin) {
+  public EventPlayer(Player player, Main plugin, Location dest) {
   	//some bug prevention first
   	player.closeInventory();
   	player.getPassengers().clear();
@@ -69,7 +69,7 @@ public class EventPlayer {
   	player.getActivePotionEffects().clear();
   	player.getInventory().clear();
   	//and finally, teleport him
-  	player.teleport(loc);
+  	player.teleport(dest);
   	save();
   }
   
@@ -189,7 +189,7 @@ public class EventPlayer {
   			.append(new StringBuilder(uuid.toString()).append(".yml").toString()).toString());
   	if (f.exists()) {
   		FileConfiguration fc = YamlConfiguration.loadConfiguration(f);
-  		HashSet<PotionEffect> potions = new HashSet<>(); //TODO: loading potions
+  		HashSet<PotionEffect> potions = new HashSet<>();
   		for (String potion : fc.getConfigurationSection("potions").getKeys(false))
   		  potions.add(new PotionEffect(PotionEffectType.getByName(fc.getString(new StringBuilder("potions.").append(potion).append(".type").toString())), fc.getInt(new StringBuilder("potions.").append(potion).append(".duration").toString()), fc.getInt(new StringBuilder("potions.").append(potion).append(".amplifier").toString())));
   		HashSet<ItemStack> it = new HashSet<>();

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.Utils.ConfigAccessor;
+import com.gmail.ZiomuuSs.Utils.msg;
 
 
 public class Reward {
@@ -25,7 +27,10 @@ public class Reward {
 		this.item = item;
 		expires = System.currentTimeMillis()+(3*24*60*60*1000);
 		if (rewards.containsKey(uuid))
-			rewards.get(uuid).add(this);
+			if (rewards.get(uuid).size() < 55)
+				rewards.get(uuid).add(this);
+			else
+				Bukkit.getPlayer(uuid).sendMessage(msg.REWARD_NO_SPACE.get());
 		else
 			rewards.put(uuid, new HashSet<Reward>(Arrays.asList(this)));
 		save(uuid, plugin);
@@ -81,7 +86,7 @@ public class Reward {
 		for (File file : new File(plugin.getDataFolder() + String.valueOf(File.separatorChar) + "Players").listFiles()) {
 			FileConfiguration cs = YamlConfiguration.loadConfiguration(new File(file.getPath() + String.valueOf(File.separatorChar) + "rewards.yml"));
 			for (String s : cs.getConfigurationSection("reward").getKeys(false))  {
-				new Reward(UUID.fromString(file.getName()), cs.getItemStack(s+".item"), cs.getLong(s+".expires"));
+				new Reward(UUID.fromString(file.getName()), cs.getItemStack(new StringBuilder(s).append(".item").toString()), cs.getLong(new StringBuilder(s).append(".expires").toString()));
 				++count;
 			}
 		}

@@ -144,6 +144,10 @@ public class Event implements Listener {
     return started;
   }
   
+  public int getToStart() {
+  	return toStart;
+  }
+  
   public void kickAll() {
   	for (EventPlayer ep : players.values()) {
   		ep.returnToLobby();

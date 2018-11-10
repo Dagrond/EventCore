@@ -66,22 +66,37 @@ public class Lobby {
 		players.remove(uuid);
 	}
 	
+	public static EventPlayer getPlayer(UUID uuid) {
+		return players.get(uuid);
+	}
+	
 	public static Location getLocation() {
 		return loc;
 	}
 	
 	public static String[] getMotd() {
-	  String[] message = new String[5];
+	  String[] message = new String[6];
 	  message[0] = msg.LOBBY_MESSAGE_HEADER.get();
 	  if (EventQueue.getCurrent() != null) {
 	    Event e = EventQueue.getCurrent();
 	    message[1] = msg.LOBBY_MESSAGE_CURRENT.get(e.getName(), e.getType().toString());
-	    message[2] = msg.LOBBY_MESSAGE_PLAYERS_IN_LOBBY.get(Integer.toString(players.size()));
-	    message[3] = msg.LOBBY_MESSAGE_TIME.get(TimeUtilities.formatTime(e.getStarted()));
-	    message[4] = msg.LOBBY_MESSAGE_SPECTATE_INVITE.get();
+	    message[2] = msg.LOBBY_MESSAGE_TIME.get(TimeUtilities.formatTime(e.getStarted()));
+	    message[3] = msg.LOBBY_MESSAGE_PLAYERS_IN_EVENT.get(Integer.toString(e.getPlayers().size()));
+	    message[4] = msg.LOBBY_MESSAGE_PLAYERS_IN_LOBBY.get(Integer.toString(players.size()));
+	    message[5] = msg.LOBBY_MESSAGE_SPECTATE_INVITE.get();
 	  } else if (EventQueue.getStarting() != null) {
+	  	Event e = EventQueue.getStarting();
+	  	message[1] = msg.LOBBY_MESSAGE_STARTING.get(e.getName(), e.getType().toString());
+	  	message[2] = msg.LOBBY_MESSAGE_START_IN.get(TimeUtilities.formatTime((long) e.getToStart()));
+	  	message[3] = msg.LOBBY_MESSAGE_PLAYERS_IN_LOBBY.get(Integer.toString(players.size()));
+	  	message[4] = msg.LOBBY_MESSAGE_INFO_TIP.get();
+	  	message[5] = msg.LOBBY_MESSAGE_REWARD_TIP.get();
 	  } else {
-	    
+	    message[1] = msg.LOBBY_MESSAGE_NO_EVENT.get();
+	    message[2] = "";
+	    message[3] = "";
+	    message[4] = "";
+	    message[5] = "";
 	  }
 	  return message;
 	}
