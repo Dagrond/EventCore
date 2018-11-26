@@ -3,7 +3,7 @@ main: com.gmail.ZiomuuSs.Main
 version: 0.1
 api-version: 1.13
 author: Dagrond
-softdepend: [Multiverse-Core, WorldGuard, WorldEdit, CombatLogX, AuthMe, ChatItem, MyItems]
+softdepend: [Multiverse-Core, WorldGuard, WorldEdit, CombatLogX, AuthMe, ChatItem, MyItems, FastAsyncWorldEdit]
 commands:
    EventCore:
       aliases: [ce]

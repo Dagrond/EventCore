@@ -10,9 +10,19 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import com.boydti.fawe.FaweAPI;
+import com.boydti.fawe.util.EditSessionBuilder;
 import com.gmail.ZiomuuSs.Main;
+import com.gmail.ZiomuuSs.EventUtils.EventQueue;
+import com.gmail.ZiomuuSs.Utils.CountdownTimer;
 import com.gmail.ZiomuuSs.Utils.msg;
+import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -25,6 +35,7 @@ public class SpleefEvent extends Event {
 	private int countdown = 5; //seconds after teleport when destroying blocks in above regions will be avaible
 	private World world; //world of that event (needed for regions and WorldEdit/FAWE
 	private Material floorMaterial; //material of spleef's floor
+	private EditSession session;
 	static {
 		type = EventType.SPLEEF;
 	}
@@ -35,10 +46,28 @@ public class SpleefEvent extends Event {
 		this.regions = regions;
 		this.world = world;
 		this.floorMaterial = floorMaterial;
+		session = new EditSessionBuilder(FaweAPI.getWorld(world.getName())).fastmode(true).build();
 	}
 	
+	@SuppressWarnings("static-access")
 	public void startSequence() {
-		//after countdown is up and event has started
+		super.startSequence();
+		//plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		CountdownTimer xd = new CountdownTimer(plugin, countdown,
+        () -> {
+          EventQueue.setStarting(this);
+        },
+         () -> {
+        	 BlockBreakEvent.getHandlerList().unregisterAll(this);
+        	 super.broadcast(msg.EVENT_SPLEEF_START.get());
+          },
+        (t) -> {
+          for (Player player : players.keySet()) {
+          	player.sendTitle(msg.EVENT_SPLEEF_GET_READY.get(), Integer.toString(t.getSecondsLeft()), 1, 18, 1);
+          }
+        });
+    xd.scheduleTimer();
+    
 	}
 	
 	public void setCountDown(int countdown) {
@@ -120,6 +149,30 @@ public class SpleefEvent extends Event {
 			}
 		}
 		return count;
+	}
+	
+	
+	//this event is listening only when event is starting.
+	@EventHandler
+  public void onBlockBreak(BlockBreakEvent e) {
+		Player player = e.getPlayer();
+		if (players.containsKey(player)) {
+			e.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+  public void onDamage(EntityDamageEvent e) {
+		if (e.getEntity() instanceof Player) {
+			Player player = (Player) e.getEntity();
+			if (players.containsKey(player)) {
+				if (e.getCause() == DamageCause.VOID) {
+					super.kick(player);
+					super.checkWinCondition();
+				} else
+					e.setCancelled(true);
+			}
+		}
 	}
 	
 	public static boolean exist(String name) {

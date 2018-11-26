@@ -16,6 +16,7 @@ public enum msg {
 	ERROR_ALREADY_IN_PROGRESS("&5[&6Event&5] &cNie mo¿na wystartowaæ eventu, poniewa¿ jakiœ ju¿ trwa!"),
 	ERROR_NOT_IN_LOBBY("&5[&6Event&5] &cNie jesteœ w lobby! Aby do³¹czyæ do lobby, wpisz &c&l/e lobby&r&c."),
 	ERROR_LOAD_NOT_CONFIGURED("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Brakuj¹ca opcja: &c&l%3"),
+	ERROR_LOAD_LOBBY_NOT_SET("&5[&6Event&5] &cNie za³adowano punktu lobby! Ustaw punkt spawnu lobby za pomoc¹ &c&l/ce lobbyspawn&r&c!"),
 	ERROR_LOAD_WORLD_NOT_EXIST("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: Œwiat &c&l%3 &r&cnie istnieje!"),
 	ERROR_LOAD_NO_REGIONS("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: nie znaleziono ¿adnych regionów!"),
 	ERROR_LOAD_NO_STARTPOINTS("&5[&6Event&5] &cNie mo¿na za³adowaæ eventu &c&l%1 &r&ctypu &c&l%2&r&c: nie znaleziono ¿adnych punktów startowych!"),
@@ -32,6 +33,7 @@ public enum msg {
 	ERROR_STARTING_NOT_ENOUGH_PLAYERS("&5[&6Event&5] &cEvent &c&l%1&r&c nie rozpocznie siê, poniewa¿ w lobby znajduje siê zbyt ma³a iloœæ graczy :( (&c&l%2&r&c/&c&l%3&r&c)"),
 	COUTDOWN("&5[&6Event&5] &a&l%1 &r&arozpocznie siê za %2 sekund!"),
 	LOADED("&5[&6Event&5] &aZa³adowano &a&l%1 &r&aevent(ów)! W tym: &a&l%2"),
+	LOADED_LOBBY("&5[&6Event&5] &aPomyœlnie za³adowano punkt spawnu lobby!"),
 	INFO_TIP("&5[&6Event&5] &aNie wiesz na czym polega ten event? Wpisz &a&l/e info&r&a."),
 	LOBBY_JOINED("&5[&6Event&5] &aPomyœlnie do³¹czy³eœ do lobby."),
   LOBBY_LEAVE("&5[&6Event&5] &aPomyœlnie opuœci³eœ lobby."),
@@ -60,7 +62,11 @@ public enum msg {
   REWARD_NOT_ALL_CLAIMED("&5[&6Event&5] &cUWAGA! Nie odebra³eœ wszystkich nagród. Nieodebrane nagrody s¹ usuwane po 3 dniach od ich otrzymania."),
   REWARD_NOT_IN_LOBBY("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ lobby komend¹ &c&l/e wyjdz&r&c."),
   REWARD_NOT_IN_EVENT("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ event komend¹ &c&l/e wyjdz&r&c."),
-  EVENT_STARTING_SOON("&5[&6Event&5] &aEvent &a&l%1 &r&a(&a&l%2&r&a) rozpocznie siê za &a&l%3&r&a sekund! Wpisz &a&l/e lobby &r&aaby do niego do³¹czyæ."),
+  EVENT_SPLEEF_GET_READY("Niszczenie bloków zostanie w³¹czone za"),
+  EVENT_SPLEEF_START("&5[&6Event&5] &aNiszczenie bloków zosta³o w³¹czone! Powodzenia!"),
+  EVENT_WIN("&5[&6Event&5] &aEvent &a&l%a&r&a wygra³ gracz &a&l%2&r&a! Gratulacje!"),
+  EVENT_QUIT("&5[&6Event&5] &aGracz &a&l%1&r&a wyszed³ z eventu! Pozosta³o &a&l%2&r&a graczy!"),
+  EVENT_STARTING_SOON("&aEvent &a&l%1 &r&a(&a&l%2&r&a) rozpocznie siê za &a&l%3&r&a sekund!"),
   EVENT_PLAYER_LEAVED("&5[&6Event&5] &aGracz &a&l%1 &r&aopuœci³ event! Pozosta³o &a&l%2&r&a graczy."),
   STARTED("&5[&6Event&5] &aPomyœlnie zacz¹³eœ event &a&l%1 &r&atypu &a&l%2&r&a!");
   

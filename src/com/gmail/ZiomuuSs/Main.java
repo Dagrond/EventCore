@@ -8,6 +8,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.ZiomuuSs.Commands.EventCommand;
 import com.gmail.ZiomuuSs.Commands.EventCoreCommand;
+import com.gmail.ZiomuuSs.Listeners.onCommandListener;
+import com.gmail.ZiomuuSs.Listeners.onDamageListener;
+import com.gmail.ZiomuuSs.Listeners.onDropListener;
+import com.gmail.ZiomuuSs.Listeners.onLeaveListener;
 import com.gmail.ZiomuuSs.Utils.msg;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
@@ -28,6 +32,11 @@ public final class Main extends JavaPlugin {
     	worldGuard = (WorldGuardPlugin) plugin;
     getCommand("EventCore").setExecutor(new EventCoreCommand(this));
     getCommand("Event").setExecutor(new EventCommand(this));
+    //plugin.getServer().getPluginManager().registerEvents(new AuthMeListener(this), this);
+    plugin.getServer().getPluginManager().registerEvents(new onCommandListener(), this);
+    plugin.getServer().getPluginManager().registerEvents(new onDropListener(), this);
+    plugin.getServer().getPluginManager().registerEvents(new onLeaveListener(), this);
+    plugin.getServer().getPluginManager().registerEvents(new onDamageListener(), this);
     //Event.loadAll(this);
   }
   

@@ -23,7 +23,7 @@ public class Reward {
 	private long expires = 0L;
 	
 	//for rewards adding
-	Reward(ItemStack item, UUID uuid, Main plugin) {
+	public Reward(ItemStack item, UUID uuid, Main plugin) {
 		this.item = item;
 		expires = System.currentTimeMillis()+(3*24*60*60*1000);
 		if (rewards.containsKey(uuid))

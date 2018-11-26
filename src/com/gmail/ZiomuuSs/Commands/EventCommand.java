@@ -30,9 +30,9 @@ public class EventCommand implements CommandExecutor {
     		UUID uuid = player.getUniqueId();
 	    	if (args.length > 0) {
 	    		if (args[0].equalsIgnoreCase("lobby") || args[0].equalsIgnoreCase("j")) {
-	    		  if (EventPlayer.isInEvent(uuid)) {
+	    		  if (EventPlayer.isInEvent(player)) {
 	    		  	Event e = EventQueue.getCurrent();
-	    		  	e.removePlayer(uuid, true);
+	    		  	e.removePlayer(player, true);
 	    		  	e.announceLeaved(uuid);
 	    		  	player.sendMessage(Lobby.getMotd());
 	    		  	return true;
@@ -48,9 +48,9 @@ public class EventCommand implements CommandExecutor {
 	    		  player.sendMessage(Lobby.getMotd());
 	    		  return true;
 	    		} else if (args[0].equalsIgnoreCase("wyjdz") || args[0].equalsIgnoreCase("l")) {
-	    			if (EventPlayer.isInEvent(uuid)) {
+	    			if (EventPlayer.isInEvent(player)) {
 	    				Event e = EventQueue.getCurrent();
-	    		  	e.removePlayer(uuid, false);
+	    		  	e.removePlayer(player, false);
 	    		  	e.announceLeaved(uuid);
 	    		  	player.sendMessage(msg.EVENT_LEAVE.get());
 	    			} else if (EventPlayer.isInLobby(uuid)) {

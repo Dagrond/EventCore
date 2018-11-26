@@ -9,8 +9,15 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
@@ -19,6 +26,7 @@ import com.gmail.ZiomuuSs.Main;
 import com.gmail.ZiomuuSs.EventUtils.EventPlayer;
 import com.gmail.ZiomuuSs.EventUtils.EventQueue;
 import com.gmail.ZiomuuSs.EventUtils.Lobby;
+import com.gmail.ZiomuuSs.EventUtils.Reward;
 import com.gmail.ZiomuuSs.Utils.CountdownTimer;
 import com.gmail.ZiomuuSs.Utils.msg;
 
@@ -26,7 +34,7 @@ public class Event implements Listener {
 	protected static EventType type = EventType.BASIC;
   protected Main plugin;
   protected String name; //display name of event
-  protected HashMap<UUID, EventPlayer> players = new HashMap<>(); //Players in event
+  protected HashMap<Player, EventPlayer> players = new HashMap<>(); //Players in event
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers = -1; //max players in event, when <0 unlimited
@@ -44,6 +52,7 @@ public class Event implements Listener {
   protected ItemStack reward;
   protected boolean cancelled = false; //defines if event is cancelled (needed to cancel event if is stating)
   protected int toStart = 0; //in how many seconds event will start
+  protected BossBar bar = Bukkit.createBossBar(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(delay)), BarColor.GREEN, BarStyle.SOLID);
   
   public Event(Main plugin, String name) {
   	this.plugin = plugin;
@@ -54,8 +63,12 @@ public class Event implements Listener {
   public static void loadAll(Main plugin) {
   	int total = 0;
   	int temp = 0;
-  	StringBuilder including = new StringBuilder("");
   	Logger log = Bukkit.getLogger();
+  	StringBuilder including = new StringBuilder("");
+  	if(Lobby.load(plugin))
+  		log.info(msg.LOADED_LOBBY.get());
+  	else
+  		log.info(msg.ERROR_LOAD_LOBBY_NOT_SET.get());
   	if (plugin.getWorldGuard() != null) {
   		temp = SpleefEvent.load(plugin);
   		total += temp;
@@ -66,30 +79,62 @@ public class Event implements Listener {
   	log.info(msg.LOADED.get(Integer.toString(total), including.substring(0, including.length()-2)));
   }
   
-	public void startSequence() {}
+	public void startSequence() {
+		//teleport players to startpoints
+		int index = 0;
+		for (UUID uuid : Lobby.getAllPlayers().keySet()) {
+			Player player = Bukkit.getPlayer(uuid);
+			if (player != null) {
+				player.teleport(startPoints.get(index));
+				if (index == startPoints.size()-1)
+					index = 0;
+				else
+					++index;
+				players.put(player, Lobby.getPlayer(uuid));
+			}
+    }
+		Lobby.clearPlayers();
+		//register events
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	
+	}
   
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		Player player = e.getPlayer();
+		if (players.containsKey(player)) {
+			kick(player);
+			if (!checkWinCondition())
+				broadcast(msg.EVENT_QUIT.get(e.getPlayer().getName(), Integer.toString(players.size())));
+		}
+	}
+	
 	public String getName() {
 	  return name;
 	}
 	
-	public Collection<UUID> getPlayers() {
+	public void addToBossBar(Player player) {
+		bar.addPlayer(player);
+	}
+	
+	public Collection<Player> getPlayers() {
 		return players.keySet();
 	}
 	
 	//boolean lobby - if true, player is throw back to lobby. If false, player is returned (location, inventory etc before even /e lobby)
-	public void removePlayer(UUID uuid, boolean lobby) {
-		if (players.containsKey(uuid)) {
+	public void removePlayer(Player player, boolean lobby) {
+		if (players.containsKey(player)) {
 			if (lobby)
-				players.get(uuid).returnToLobby();
+				players.get(player).returnToLobby();
 			else
-				players.get(uuid).restore();
-			players.remove(uuid);
+				players.get(player).restore();
+			players.remove(player);
 		}
 	}
 	
 	public void broadcast(String message) {
-		for (UUID uuid : players.keySet()) {
-			Bukkit.getPlayer(uuid).sendMessage(message); //no need to check if online cuz when he gets offline, he is automatically removed from this list
+		for (Player player : players.keySet()) {
+			player.sendMessage(message); //no need to check if online cuz when he gets offline, he is automatically removed from this list
 		}
 	}
 	
@@ -102,19 +147,23 @@ public class Event implements Listener {
   	CountdownTimer timer = new CountdownTimer(plugin, delay,
         () -> {
         	this.reward = reward;
-          Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(delay)));
+          bar.setProgress(0);
+          bar.setVisible(true);
+          for (Player player : Bukkit.getOnlinePlayers())
+          	bar.addPlayer(player);
           EventQueue.setStarting(this);
         },
          () -> {
+        	 bar.setVisible(false);
         	 if (Lobby.size() < minPlayers) {
-        		 this.reward = null;
              EventQueue.setStarting(null);
-             Lobby.broadcast(msg.ERROR_STARTING_NOT_ENOUGH_PLAYERS.get(name, Integer.toString(Lobby.size()), Integer.toString(minPlayers)));
+             Bukkit.broadcastMessage(msg.ERROR_STARTING_NOT_ENOUGH_PLAYERS.get(name, Integer.toString(Lobby.size()), Integer.toString(minPlayers)));
              kickAll();
              return;
         	 }
-        	 EventQueue.setStarting(null);
+        	 //get players in lobby and transfer them to event
         	 EventQueue.setCurrent(this);
+        	 EventQueue.setStarting(null);
         	 startSequence();
         	 started = System.currentTimeMillis();
           },
@@ -122,12 +171,15 @@ public class Event implements Listener {
           if (cancelled) {
             t.cancel();
             this.reward = null;
+            bar.setVisible(false);
             EventQueue.setStarting(null);
-            Lobby.broadcast(msg.ERROR_STARTING_CANCELLED.get(name));
+            Bukkit.broadcastMessage(msg.ERROR_STARTING_CANCELLED.get(name));
             kickAll();
             return;
           }
           toStart = t.getSecondsLeft();
+          bar.setProgress((double) 1-((toStart*100)/delay)/100);
+          bar.setTitle(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
           if (toStart == delay/2)
           	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
           else if (toStart == 10)
@@ -138,6 +190,13 @@ public class Event implements Listener {
   
   public void stopSequence() {
     started = 0L;
+    if (EventQueue.getCurrent().equals(this)) {
+    	EventQueue.setCurrent(null);
+    } else if (EventQueue.getStarting().equals(this)) {
+    	EventQueue.setStarting(null);
+    }
+    HandlerList.unregisterAll();
+    kickAll();
   }
   
   public long getStarted() {
@@ -155,16 +214,31 @@ public class Event implements Listener {
   	players.clear();
   }
   
-  public void kick(UUID uuid) {
-  	if (players.containsKey(uuid)) {
-  		players.get(uuid).returnToLobby();
-  		players.remove(uuid);
+  public void kick(Player player) {
+  	if (players.containsKey(player)) {
+  		players.get(player).returnToLobby();
+  		players.remove(player);
   	}
   }
   
   public EventType getType() {
   	return type;
   }
+  
+  //by default check if there is only 1 player left and handle winning
+	protected boolean checkWinCondition() {
+		if (players.size() == 1) {
+			for (Player player : players.keySet()) {
+				Bukkit.broadcastMessage(msg.EVENT_WIN.get(name, player.getName()));
+				new Reward(reward, player.getUniqueId(), plugin);
+				player.sendMessage(msg.REWARD_ADDED.get());
+				players.get(player).returnToLobby();
+				stopSequence();
+				return true;
+			}
+		}
+		return false;
+	}
   
   public boolean loadBasicVariables(Main plugin, FileConfiguration fc, String name, String type, Logger log, World world) {
   	//loading needed variables

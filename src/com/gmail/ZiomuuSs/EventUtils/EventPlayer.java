@@ -43,7 +43,6 @@ public class EventPlayer {
   	//some bug prevention first
   	player.closeInventory();
   	player.getPassengers().clear();
-  	player.getVehicle().getPassengers().clear();
   	//place for removing combat mode from player to prevent bugs
   	//then save player...
   	this.plugin = plugin;
@@ -121,14 +120,20 @@ public class EventPlayer {
   		player.getActivePotionEffects().addAll(potions);
   		player.getInventory().setContents(items);
   		player.teleport(loc);
+  		if (isSaved(uuid)) {
+  			new File((new StringBuilder(plugin.getDataFolder().toString())
+  	  			.append(String.valueOf(File.separatorChar)).append("Players").append(String.valueOf(File.separatorChar))
+  	  			.append(uuid.toString()).append(".yml")).toString()).delete();
+  			savedPlayers.remove(uuid);
+  		}
   	}
   }
   
-  public static boolean isInEvent(UUID uuid) {
+  public static boolean isInEvent(Player player) {
   	Event e = EventQueue.getCurrent();
   	if (e == null)
   		return false;
-  	return e.getPlayers().contains(uuid);
+  	return e.getPlayers().contains(player);
   }
   
   public static boolean isInLobby(UUID uuid) {
