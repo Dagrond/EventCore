@@ -51,12 +51,14 @@ public class Event implements Listener {
   protected String prefix = "";
   protected ItemStack reward;
   protected boolean cancelled = false; //defines if event is cancelled (needed to cancel event if is stating)
-  protected int toStart = 0; //in how many seconds event will start
-  protected BossBar bar = Bukkit.createBossBar(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(delay)), BarColor.GREEN, BarStyle.SOLID);
+  private int toStart = 0; //in how many seconds event will start. 0 if started
+  protected int timer = 0; //time, in seconds, how long event is in progress, does not count 'delay'
+  protected BossBar bar;
   
   public Event(Main plugin, String name) {
   	this.plugin = plugin;
   	this.name = name;
+  	bar = Bukkit.createBossBar(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(delay)), BarColor.GREEN, BarStyle.SOLID);
   }
   
   
@@ -129,6 +131,7 @@ public class Event implements Listener {
 			else
 				players.get(player).restore();
 			players.remove(player);
+			checkWinCondition();
 		}
 	}
 	
@@ -151,6 +154,7 @@ public class Event implements Listener {
           bar.setVisible(true);
           for (Player player : Bukkit.getOnlinePlayers())
           	bar.addPlayer(player);
+          beforeStart();
           EventQueue.setStarting(this);
         },
          () -> {
@@ -178,24 +182,28 @@ public class Event implements Listener {
             return;
           }
           toStart = t.getSecondsLeft();
-          bar.setProgress((double) 1-((toStart*100)/delay)/100);
+          bar.setProgress((double) toStart/delay);
           bar.setTitle(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
           if (toStart == delay/2)
-          	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
+          	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(type.toString()));
           else if (toStart == 10)
-          	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(name, type.toString(), Integer.toString(toStart)));
+          	Bukkit.broadcastMessage(msg.EVENT_STARTING_SOON.get(type.toString()));
         });
     timer.scheduleTimer();
   }
   
+  
+  //some events need to run some code before event starts, at beggining of delay
+  public void beforeStart() {}
+  
   public void stopSequence() {
     started = 0L;
-    if (EventQueue.getCurrent().equals(this)) {
+    if (EventQueue.getCurrent().getName().equals(getName())) {
     	EventQueue.setCurrent(null);
-    } else if (EventQueue.getStarting().equals(this)) {
+    } else if (EventQueue.getStarting().getName().equals(getName())) {
     	EventQueue.setStarting(null);
     }
-    HandlerList.unregisterAll();
+    HandlerList.unregisterAll(this);
     kickAll();
   }
   

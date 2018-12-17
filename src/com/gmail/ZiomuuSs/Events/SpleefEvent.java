@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -17,13 +17,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.boydti.fawe.FaweAPI;
-import com.boydti.fawe.util.EditSessionBuilder;
+import com.boydti.fawe.object.FaweQueue;
 import com.gmail.ZiomuuSs.Main;
-import com.gmail.ZiomuuSs.EventUtils.EventQueue;
-import com.gmail.ZiomuuSs.Utils.CountdownTimer;
 import com.gmail.ZiomuuSs.Utils.msg;
-import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.world.World;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -35,7 +34,7 @@ public class SpleefEvent extends Event {
 	private int countdown = 5; //seconds after teleport when destroying blocks in above regions will be avaible
 	private World world; //world of that event (needed for regions and WorldEdit/FAWE
 	private Material floorMaterial; //material of spleef's floor
-	private EditSession session;
+	private FaweQueue queue;
 	static {
 		type = EventType.SPLEEF;
 	}
@@ -46,32 +45,43 @@ public class SpleefEvent extends Event {
 		this.regions = regions;
 		this.world = world;
 		this.floorMaterial = floorMaterial;
-		session = new EditSessionBuilder(FaweAPI.getWorld(world.getName())).fastmode(true).build();
+		queue = FaweAPI.createQueue(world, true);
 	}
 	
-	@SuppressWarnings("static-access")
 	public void startSequence() {
 		super.startSequence();
-		//plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		CountdownTimer xd = new CountdownTimer(plugin, countdown,
-        () -> {
-          EventQueue.setStarting(this);
-        },
-         () -> {
-        	 BlockBreakEvent.getHandlerList().unregisterAll(this);
-        	 super.broadcast(msg.EVENT_SPLEEF_START.get());
-          },
-        (t) -> {
-          for (Player player : players.keySet()) {
-          	player.sendTitle(msg.EVENT_SPLEEF_GET_READY.get(), Integer.toString(t.getSecondsLeft()), 1, 18, 1);
+    SpleefEvent e = this;
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    	@Override
+    	public void run() {
+    		if (timer == 0)
+    			broadcast(msg.EVENT_SPLEEF_START_WARNING.get(Integer.toString(countdown)));
+    		if (timer < countdown) {
+    			for (Player player : players.keySet()) {
+          	player.sendTitle(ChatColor.DARK_RED+Integer.toString(countdown-timer), "", 1, 21, 1);
           }
-        });
-    xd.scheduleTimer();
-    
+    		} else if (timer == countdown) {
+    			BlockBreakEvent.getHandlerList().unregister(e);
+       	 broadcast(msg.EVENT_SPLEEF_START.get());
+    		}
+    		
+    		++timer;
+    	}
+    }, 0L, 20L);
 	}
 	
 	public void setCountDown(int countdown) {
 		this.countdown = countdown;
+	}
+	
+	//set surface of all regions before event starts
+	@SuppressWarnings("deprecation")
+	@Override
+	public void beforeStart() {
+		for (ProtectedRegion region : regions) {
+			queue.setBlocks(new CuboidRegion(world, region.getMaximumPoint(), region.getMinimumPoint()), (floorMaterial.getId() << 4) + floorMaterial.getMaxDurability());
+		}
+		queue.flush();
 	}
 	
 	public static int load(Main plugin) {
@@ -88,7 +98,7 @@ public class SpleefEvent extends Event {
 			//loading world
 			World world;
 			if (fc.isString("world")) {
-				world = Bukkit.getWorld(fc.getString("world"));
+				world = FaweAPI.getWorld(fc.getString("world"));
 			} else {
 				log.info(msg.ERROR_LOAD_NOT_CONFIGURED.get(name, type.toString(), "world"));
 				continue;
@@ -101,7 +111,7 @@ public class SpleefEvent extends Event {
 			ArrayList<ProtectedRegion> regions = new ArrayList<>();
 			if (fc.isList("regions")) {
 				int loadedRegions = 0;
-				RegionManager manager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+				RegionManager manager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(world.getName())));
 				for (String region : fc.getStringList("regions")) {
 					if (manager.hasRegion(region)) {
 						regions.add(manager.getRegion(region));
@@ -142,7 +152,7 @@ public class SpleefEvent extends Event {
 				event.setCountDown(fc.getInt("countdown"));
 			}
 			//loading basic variables
-			if(event.loadBasicVariables(plugin, fc, name, type.toString(), log, world)) {
+			if(event.loadBasicVariables(plugin, fc, name, type.toString(), log, Bukkit.getWorld(world.getName()))) {
 			//if everything is fine, add event to avaible events.
 			  events.put(name, event);
 			  ++count;

@@ -62,11 +62,11 @@ public enum msg {
   REWARD_NOT_ALL_CLAIMED("&5[&6Event&5] &cUWAGA! Nie odebra³eœ wszystkich nagród. Nieodebrane nagrody s¹ usuwane po 3 dniach od ich otrzymania."),
   REWARD_NOT_IN_LOBBY("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ lobby komend¹ &c&l/e wyjdz&r&c."),
   REWARD_NOT_IN_EVENT("&5[&6Event&5] &cAby odebraæ nagrody, musisz najpierw opuœciæ event komend¹ &c&l/e wyjdz&r&c."),
-  EVENT_SPLEEF_GET_READY("Niszczenie bloków zostanie w³¹czone za"),
+  EVENT_SPLEEF_START_WARNING("&5[&6Event&5] &aNiszczenie bloków zostanie w³¹czone za &a&l%1&r&a sekund! Przygotujcie siê!"),
   EVENT_SPLEEF_START("&5[&6Event&5] &aNiszczenie bloków zosta³o w³¹czone! Powodzenia!"),
-  EVENT_WIN("&5[&6Event&5] &aEvent &a&l%a&r&a wygra³ gracz &a&l%2&r&a! Gratulacje!"),
+  EVENT_WIN("&5[&6Event&5] &aEvent &a&l%1&r&a wygra³ gracz &a&l%2&r&a! Gratulacje!"),
   EVENT_QUIT("&5[&6Event&5] &aGracz &a&l%1&r&a wyszed³ z eventu! Pozosta³o &a&l%2&r&a graczy!"),
-  EVENT_STARTING_SOON("&aEvent &a&l%1 &r&a(&a&l%2&r&a) rozpocznie siê za &a&l%3&r&a sekund!"),
+  EVENT_STARTING_SOON("&aWpisz &a&l/e lobby&r&a aby do³¹czyæ do eventu (&a&l%1&r&a)."),
   EVENT_PLAYER_LEAVED("&5[&6Event&5] &aGracz &a&l%1 &r&aopuœci³ event! Pozosta³o &a&l%2&r&a graczy."),
   STARTED("&5[&6Event&5] &aPomyœlnie zacz¹³eœ event &a&l%1 &r&atypu &a&l%2&r&a!");
   

@@ -32,7 +32,8 @@ public class EventPlayer {
   private double health;
   private double maxHealth;
   private float saturation;
-  private float hunger;
+  private float exhaustion;
+  private int foodLevel;
   private GameMode gamemode;
   private boolean fly;
   private Collection<PotionEffect> potions = new HashSet<PotionEffect>();
@@ -52,7 +53,8 @@ public class EventPlayer {
   	health = player.getHealth();
   	maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
   	saturation = player.getSaturation();
-  	hunger = player.getExhaustion();
+  	exhaustion = player.getExhaustion();
+  	foodLevel = player.getFoodLevel();
   	gamemode = player.getGameMode();
   	fly = player.isFlying();
   	potions = player.getActivePotionEffects();
@@ -62,7 +64,8 @@ public class EventPlayer {
   	player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
   	player.setHealth(20);
   	player.setSaturation(5);
-  	player.setExhaustion(20);
+  	player.setExhaustion(0);
+  	player.setFoodLevel(20);
   	player.setGameMode(GameMode.SURVIVAL);
   	player.setFlying(false);
   	player.getActivePotionEffects().clear();
@@ -73,7 +76,7 @@ public class EventPlayer {
   }
   
   //for loading from files
-  public EventPlayer(Main plugin,UUID uuid, Location loc, float exp, double health, double maxHealth, float saturation, float hunger, GameMode gamemode, boolean fly, Collection<PotionEffect> potions, ItemStack[] items) {
+  public EventPlayer(Main plugin,UUID uuid, Location loc, float exp, double health, double maxHealth, float saturation, float exhaustion, int foodLevel, GameMode gamemode, boolean fly, Collection<PotionEffect> potions, ItemStack[] items) {
   	this.plugin = plugin;
     this.uuid = uuid;
   	this.loc = loc;
@@ -81,7 +84,8 @@ public class EventPlayer {
   	this.health = health;
   	this.maxHealth = maxHealth;
   	this.saturation = saturation;
-  	this.hunger = hunger;
+  	this.exhaustion = exhaustion;
+  	this.foodLevel = foodLevel;
   	this.gamemode = gamemode;
   	this.fly = fly;
   	this.potions = potions;
@@ -95,7 +99,8 @@ public class EventPlayer {
     	player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
     	player.setHealth(20);
     	player.setSaturation(5);
-    	player.setExhaustion(20);
+    	player.setExhaustion(0);
+    	player.setFoodLevel(20);
     	player.setGameMode(GameMode.SURVIVAL);
     	player.setFlying(false);
     	player.getActivePotionEffects().clear();
@@ -113,7 +118,8 @@ public class EventPlayer {
   		player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
   		player.setHealth(health);
   		player.setSaturation(saturation);
-  		player.setExhaustion(hunger);
+  		player.setExhaustion(exhaustion);
+  		player.setFoodLevel(foodLevel);
   		player.setGameMode(gamemode);
   		player.setFlying(fly);
   		player.getActivePotionEffects().clear();
@@ -174,7 +180,8 @@ public class EventPlayer {
     cs.set("health", health);
     cs.set("maxhealth", maxHealth);
     cs.set("saturation", saturation);
-    cs.set("hunger", hunger);
+    cs.set("exhaustion", exhaustion);
+    cs.set("foodLevel", foodLevel);
     cs.set("gamemode", gamemode.toString());
     cs.set("fly", fly);
     for (PotionEffect pe : potions) {
@@ -208,6 +215,7 @@ public class EventPlayer {
   				fc.getDouble("maxhealth"),
   				(float) fc.getDouble("saturaion"),
   				(float) fc.getDouble("hunger"),
+  				fc.getInt("foodLevel"),
   				GameMode.valueOf(fc.getString("gamemode")),
   				fc.getBoolean("fly"),
   				potions,
