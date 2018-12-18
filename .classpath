@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/spigot-api-latest.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/CombatLogX.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/ChatItem-1.3.6.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/AuthMe-5.5.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziomu/Desktop/Java/libraries/FastAsyncWorldEdit-bukkit-18.11.21-99fb2b5-2072.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/spigot-api-latest.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/worldguard-legacy-7.0.0-SNAPSHOT-dist.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/CombatLogX.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/ChatItem-1.3.6.4.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/AuthMe-5.5.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="//Pepsi/users/stobinski/Desktop/Java/libraries/FastAsyncWorldEdit-bukkit-18.11.21-99fb2b5-2072.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

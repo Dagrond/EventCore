@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 public enum msg {
   ERROR_PERMISSION("&5[&6Event&5] &cNie posiadasz odpowiednich uprawnieñ aby u¿yæ tej komendy!"),
   ERROR_CANNOT_DO_THAT_HERE("&5[&6Event&5] &cNie mo¿esz tego tutaj zrobiæ."),
+  ERROR_ITEM_IN_MAIN_HAND_AIR("&5[&6Event&5] &cNie trzymasz ¿adnego przedmiotu w rêce!"),
+  ERROR_NOT_ENOUGH_SPACE_IN_INVENTORY("&5[&6Event&5] &cTwój ekwipunek jest pe³ny!"),
   ERROR_USAGE("&5[&6Event&5] &cU¿ycie: &c&l%1"),
   ERROR_MUST_BE_PLAYER("&5[&6Event&5] &cNie mo¿na tego dokonaæ z poziomu konsoli!"),
   ERROR_EVENT_TYPE_NOT_EXIST("&5[&6Event&5] &cEvent typu &c&l%1&r&c nie istnieje! Listê wszystkich typów sprawdzisz pod &c&l/ce types&r&c."),
@@ -68,6 +70,19 @@ public enum msg {
   EVENT_QUIT("&5[&6Event&5] &aGracz &a&l%1&r&a wyszed³ z eventu! Pozosta³o &a&l%2&r&a graczy!"),
   EVENT_STARTING_SOON("&aWpisz &a&l/e lobby&r&a aby do³¹czyæ do eventu (&a&l%1&r&a)."),
   EVENT_PLAYER_LEAVED("&5[&6Event&5] &aGracz &a&l%1 &r&aopuœci³ event! Pozosta³o &a&l%2&r&a graczy."),
+  NONE("Brak"),
+  ITEM_LIST("&5[&6Event&5] &aLista zapisanych przedmiotów: &a&l%1"),
+  ITEM_REMOVED("&5[&6Event&5] &aPomyœlnie usuniêto przedmiot &a&l%1&r&a!"),
+  ITEM_NOT_EXIST("&5[&6Event&5] &cPrzedmiot o nazwie &c&l%1 &r&anie istnieje! Wpisz &c&l/ce item list &r&caby wyœwietliæ listê zapisanych ekwipunków"),
+  ITEM_SAVED("&5[&6Event&5] &aPomyœlnie zapisano przedmiot o nazwie &a&l%1&r&a!"),
+  ITEM_LOADED("&5[&6Event&5] &aPomyœlnie za³adowano przedmiot o nazwie &a&l%1&r&a!"),
+  ITEM_ALREADY_EXIST("&5[&6Event&5] &cPrzedmiot o nazwie &c&l%1 &r&aju¿ istnieje! Wpisz &c&l/ce item remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
+  INVENTORY_LIST("&5[&6Event&5] &aLista zapisanych ekwipunków: &a&l%1"),
+  INVENTORY_REMOVED("&5[&6Event&5] &aPomyœlnie usuniêto ekwipunek &a&l%1&r&a!"),
+  INVENTORY_NOT_EXIST("&5[&6Event&5] &cEkwipunek o nazwie &c&l%1 &r&anie istnieje! Wpisz &c&l/ce inv list &r&caby wyœwietliæ listê zapisanych ekwipunków"),
+  INVENTORY_SAVED("&5[&6Event&5] &aPomyœlnie zapisano ekwipunek o nazwie &a&l%1&r&a!"),
+  INVENTORY_LOADED("&5[&6Event&5] &aPomyœlnie za³adowano ekwipunek o nazwie &a&l%1&r&a!"),
+  INVENTORY_ALREADY_EXIST("&5[&6Event&5] &cEkwipunek o nazwie &c&l%1 &r&aju¿ istnieje! Wpisz &c&l/ce inv remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
   STARTED("&5[&6Event&5] &aPomyœlnie zacz¹³eœ event &a&l%1 &r&atypu &a&l%2&r&a!");
   
   private String message;

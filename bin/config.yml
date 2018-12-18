@@ -1,13 +1,2 @@
 #Do not touch this!
 version: 0.1
-#Default values when a new event is created
-Default:
-  min: 2
-  max: 0
-  build: false
-  destroy: false
-  pvp: false
-  pve: false
-  feed: true
-  start_when_max: true
-  delay: 60

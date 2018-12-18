@@ -29,7 +29,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class SpleefEvent extends Event {
 	private static HashMap<String, SpleefEvent> events = new HashMap<>();
-	private String name = "none"; //display name of event 
 	private ArrayList<ProtectedRegion> regions = new ArrayList<>(); //regions to change blocks in.
 	private int countdown = 5; //seconds after teleport when destroying blocks in above regions will be avaible
 	private World world; //world of that event (needed for regions and WorldEdit/FAWE
@@ -58,14 +57,14 @@ public class SpleefEvent extends Event {
     			broadcast(msg.EVENT_SPLEEF_START_WARNING.get(Integer.toString(countdown)));
     		if (timer < countdown) {
     			for (Player player : players.keySet()) {
-          	player.sendTitle(ChatColor.DARK_RED+Integer.toString(countdown-timer), "", 1, 21, 1);
+    				player.sendTitle(ChatColor.DARK_RED+Integer.toString(countdown-timer), "", 1, 21, 1);
           }
     		} else if (timer == countdown) {
     			BlockBreakEvent.getHandlerList().unregister(e);
-       	 broadcast(msg.EVENT_SPLEEF_START.get());
+    			broadcast(msg.EVENT_SPLEEF_START.get());
     		}
-    		
     		++timer;
+    		
     	}
     }, 0L, 20L);
 	}
