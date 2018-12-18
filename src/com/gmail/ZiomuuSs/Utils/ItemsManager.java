@@ -11,7 +11,7 @@ public class ItemsManager {
 	private static ConfigAccessor config;
 	private static FileConfiguration fc;
 	
-	public void setConfigAccessor(Main plugin) {
+	public static void setConfigAccessor(Main plugin) {
 		config = new ConfigAccessor(plugin, "items.yml");
 		fc = config.getConfig();
 	}
@@ -27,6 +27,8 @@ public class ItemsManager {
 	}
 	
 	public static String getFormattedItemList() {
+		if (!fc.isConfigurationSection("item"))
+			return msg.NONE.get();
 		String s = "";
 		for (String name : fc.getConfigurationSection("item").getKeys(false)) {
 			s += new StringBuilder(name).append(", ").toString();
@@ -39,6 +41,8 @@ public class ItemsManager {
 	}
 	
 	public static String getFormattedInventoryList() {
+		if (!fc.isConfigurationSection("inventory"))
+			return msg.NONE.get();
 		String s = "";
 		for (String name : fc.getConfigurationSection("inventory").getKeys(false)) {
 			s += new StringBuilder(name).append(", ").toString();

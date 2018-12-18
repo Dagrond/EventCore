@@ -34,6 +34,8 @@ public enum msg {
 	ERROR_WORLDGUARD_API_NOT_RESPONDING("&5[&6Event&5] &cEvent &c&l%1&r&c typu &c&l%2 &r&cnie zosta³ za³adowany: API WorldGuarda nie odpowiada!"),
 	ERROR_STARTING_NOT_ENOUGH_PLAYERS("&5[&6Event&5] &cEvent &c&l%1&r&c nie rozpocznie siê, poniewa¿ w lobby znajduje siê zbyt ma³a iloœæ graczy :( (&c&l%2&r&c/&c&l%3&r&c)"),
 	ERROR_CANNOT_LOAD_ACTION_MISSING("&5[&6Event&5] &cNie mo¿na za³adowaæ akcji &c&l\"%1\n&r&c w evencie &c&l%2&r&c: Nie mo¿na znalezæ atrybutu &c&l%3&r&c!"),
+	ERROR_CANNOT_LOAD_ACTION_INVALID_TYPE("&5[&6Event&5] &cNie mo¿na za³adowaæ akcji &c&l\"%1\n&r&c w evencie &c&l%2&r&c: Nieprawid³owy typ akcji: &c&l%3&r&c!"),
+	ERROR_CANNOT_LOAD_ACTION_INVALID_POTION_EFFECT("&5[&6Event&5] &cNie mo¿na za³adowaæ akcji &c&l\"%1\n&r&c w evencie &c&l%2&r&c: Nieprawid³owy efekt mikstury: &c&l%3&r&c!"),
 	COUTDOWN("&5[&6Event&5] &a&l%1 &r&arozpocznie siê za %2 sekund!"),
 	LOADED("&5[&6Event&5] &aZa³adowano &a&l%1 &r&aevent(ów)! W tym: &a&l%2"),
 	LOADED_LOBBY("&5[&6Event&5] &aPomyœlnie za³adowano punkt spawnu lobby!"),
@@ -77,13 +79,13 @@ public enum msg {
   ITEM_NOT_EXIST("&5[&6Event&5] &cPrzedmiot o nazwie &c&l%1 &r&anie istnieje! Wpisz &c&l/ce item list &r&caby wyœwietliæ listê zapisanych ekwipunków"),
   ITEM_SAVED("&5[&6Event&5] &aPomyœlnie zapisano przedmiot o nazwie &a&l%1&r&a!"),
   ITEM_LOADED("&5[&6Event&5] &aPomyœlnie za³adowano przedmiot o nazwie &a&l%1&r&a!"),
-  ITEM_ALREADY_EXIST("&5[&6Event&5] &cPrzedmiot o nazwie &c&l%1 &r&aju¿ istnieje! Wpisz &c&l/ce item remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
+  ITEM_ALREADY_EXIST("&5[&6Event&5] &cPrzedmiot o nazwie &c&l%1 &r&cju¿ istnieje! Wpisz &c&l/ce item remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
   INVENTORY_LIST("&5[&6Event&5] &aLista zapisanych ekwipunków: &a&l%1"),
   INVENTORY_REMOVED("&5[&6Event&5] &aPomyœlnie usuniêto ekwipunek &a&l%1&r&a!"),
   INVENTORY_NOT_EXIST("&5[&6Event&5] &cEkwipunek o nazwie &c&l%1 &r&anie istnieje! Wpisz &c&l/ce inv list &r&caby wyœwietliæ listê zapisanych ekwipunków"),
   INVENTORY_SAVED("&5[&6Event&5] &aPomyœlnie zapisano ekwipunek o nazwie &a&l%1&r&a!"),
   INVENTORY_LOADED("&5[&6Event&5] &aPomyœlnie za³adowano ekwipunek o nazwie &a&l%1&r&a!"),
-  INVENTORY_ALREADY_EXIST("&5[&6Event&5] &cEkwipunek o nazwie &c&l%1 &r&aju¿ istnieje! Wpisz &c&l/ce inv remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
+  INVENTORY_ALREADY_EXIST("&5[&6Event&5] &cEkwipunek o nazwie &c&l%1 &r&cju¿ istnieje! Wpisz &c&l/ce inv remove %1 &r&caby wyœwietliæ listê zapisanych ekwipunków"),
   STARTED("&5[&6Event&5] &aPomyœlnie zacz¹³eœ event &a&l%1 &r&atypu &a&l%2&r&a!");
   
   private String message;

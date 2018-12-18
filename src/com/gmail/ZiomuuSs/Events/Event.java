@@ -29,6 +29,7 @@ import com.gmail.ZiomuuSs.EventUtils.EventQueue;
 import com.gmail.ZiomuuSs.EventUtils.Lobby;
 import com.gmail.ZiomuuSs.EventUtils.Reward;
 import com.gmail.ZiomuuSs.Utils.CountdownTimer;
+import com.gmail.ZiomuuSs.Utils.ItemsManager;
 import com.gmail.ZiomuuSs.Utils.msg;
 
 public class Event implements Listener {
@@ -68,6 +69,7 @@ public class Event implements Listener {
   	int total = 0;
   	int temp = 0;
   	Logger log = Bukkit.getLogger();
+  	ItemsManager.setConfigAccessor(plugin);
   	StringBuilder including = new StringBuilder("");
   	if(Lobby.load(plugin))
   		log.info(msg.LOADED_LOBBY.get());

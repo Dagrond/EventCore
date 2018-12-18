@@ -76,12 +76,15 @@ public class EventCoreCommand implements CommandExecutor {
     							sender.sendMessage(msg.ITEM_ALREADY_EXIST.get(args[2]));
     					} else if (args[1].equalsIgnoreCase("load")) {
     						if (sender instanceof Player) {
-  								Player player = (Player) sender;
-  								if (player.getInventory().firstEmpty() > -1) {
-    								player.getInventory().addItem(ItemsManager.getItem(args[2]));
-    								sender.sendMessage(msg.ITEM_LOADED.get(args[2]));
-  								} else
-  									sender.sendMessage(msg.ERROR_NOT_ENOUGH_SPACE_IN_INVENTORY.get());
+    							if (ItemsManager.itemExist(args[2])) {
+	  								Player player = (Player) sender;
+	  								if (player.getInventory().firstEmpty() > -1) {
+	    								player.getInventory().addItem(ItemsManager.getItem(args[2]));
+	    								sender.sendMessage(msg.ITEM_LOADED.get(args[2]));
+	  								} else
+	  									sender.sendMessage(msg.ERROR_NOT_ENOUGH_SPACE_IN_INVENTORY.get());
+    							} else
+      							sender.sendMessage(msg.ITEM_NOT_EXIST.get(args[2]));
   							} else 
   								sender.sendMessage(msg.ERROR_MUST_BE_PLAYER.get());
     					} else if (args[1].equalsIgnoreCase("remove")) {
@@ -113,9 +116,12 @@ public class EventCoreCommand implements CommandExecutor {
     							sender.sendMessage(msg.INVENTORY_ALREADY_EXIST.get(args[2]));
     					} else if (args[1].equalsIgnoreCase("load")) {
     						if (sender instanceof Player) {
-  								Player player = (Player) sender;
-    							player.getInventory().setContents(ItemsManager.getInventory(args[2]));
-    							sender.sendMessage(msg.INVENTORY_LOADED.get(args[2]));
+    							if (ItemsManager.inventoryExist(args[2])) {
+	  								Player player = (Player) sender;
+	    							player.getInventory().setContents(ItemsManager.getInventory(args[2]));
+	    							sender.sendMessage(msg.INVENTORY_LOADED.get(args[2]));
+	    						} else
+	    							sender.sendMessage(msg.ITEM_NOT_EXIST.get(args[2]));
   							} else 
   								sender.sendMessage(msg.ERROR_MUST_BE_PLAYER.get());
     					} else if (args[1].equalsIgnoreCase("remove")) {
