@@ -96,7 +96,41 @@ public class EventCoreCommand implements CommandExecutor {
     					sender.sendMessage(msg.ERROR_USAGE.get("/ce item save/load/list/remove (args...)"));
     			} else
     				sender.sendMessage(msg.ERROR_USAGE.get("/ce item save/load/list/remove (args...)"));
-    		}
+    		} else if (args[0].equalsIgnoreCase("inv") || args[0].equalsIgnoreCase("inventory")) {
+    			if (args.length > 1) {
+    				if (args[1].equalsIgnoreCase("list")) {
+    					sender.sendMessage(msg.INVENTORY_LIST.get(ItemsManager.getFormattedInventoryList()));
+    				} else if (args.length > 2) {
+    					if (args[1].equalsIgnoreCase("save")) {
+    						if (!ItemsManager.inventoryExist(args[2])) {
+    							if (sender instanceof Player) {
+    								Player player = (Player) sender;
+	    							ItemsManager.saveInventory(args[2], player.getInventory().getContents());
+	    							sender.sendMessage(msg.INVENTORY_SAVED.get(args[2]));
+    							} else 
+    								sender.sendMessage(msg.ERROR_MUST_BE_PLAYER.get());
+    						} else
+    							sender.sendMessage(msg.INVENTORY_ALREADY_EXIST.get(args[2]));
+    					} else if (args[1].equalsIgnoreCase("load")) {
+    						if (sender instanceof Player) {
+  								Player player = (Player) sender;
+    							player.getInventory().setContents(ItemsManager.getInventory(args[2]));
+    							sender.sendMessage(msg.INVENTORY_LOADED.get(args[2]));
+  							} else 
+  								sender.sendMessage(msg.ERROR_MUST_BE_PLAYER.get());
+    					} else if (args[1].equalsIgnoreCase("remove")) {
+    						if (ItemsManager.inventoryExist(args[2])) {
+    							ItemsManager.removeInventory(args[2]);
+    							sender.sendMessage(msg.INVENTORY_REMOVED.get(args[2]));
+    						} else
+    							sender.sendMessage(msg.INVENTORY_NOT_EXIST.get(args[2]));
+    					} else
+    						sender.sendMessage(msg.ERROR_USAGE.get("/ce inventory save/load/list/remove (args...)"));
+    				} else
+    					sender.sendMessage(msg.ERROR_USAGE.get("/ce inventory save/load/list/remove (args...)"));
+    			} else
+    				sender.sendMessage(msg.ERROR_USAGE.get("/ce inventory save/load/list/remove (args...)"));
+    		} 
     	} else
     		sender.sendMessage(msg.ERROR_USAGE.get("/ce (args)"));
     }

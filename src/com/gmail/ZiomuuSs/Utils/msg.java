@@ -33,6 +33,7 @@ public enum msg {
 	ERROR_EVENT_NOT_IN_EVENT_OR_LOBBY("&5[&6Event&5] &cNie znajdujesz siê ani w lobby, ani w evencie!"),
 	ERROR_WORLDGUARD_API_NOT_RESPONDING("&5[&6Event&5] &cEvent &c&l%1&r&c typu &c&l%2 &r&cnie zosta³ za³adowany: API WorldGuarda nie odpowiada!"),
 	ERROR_STARTING_NOT_ENOUGH_PLAYERS("&5[&6Event&5] &cEvent &c&l%1&r&c nie rozpocznie siê, poniewa¿ w lobby znajduje siê zbyt ma³a iloœæ graczy :( (&c&l%2&r&c/&c&l%3&r&c)"),
+	ERROR_CANNOT_LOAD_ACTION_MISSING("&5[&6Event&5] &cNie mo¿na za³adowaæ akcji &c&l\"%1\n&r&c w evencie &c&l%2&r&c: Nie mo¿na znalezæ atrybutu &c&l%3&r&c!"),
 	COUTDOWN("&5[&6Event&5] &a&l%1 &r&arozpocznie siê za %2 sekund!"),
 	LOADED("&5[&6Event&5] &aZa³adowano &a&l%1 &r&aevent(ów)! W tym: &a&l%2"),
 	LOADED_LOBBY("&5[&6Event&5] &aPomyœlnie za³adowano punkt spawnu lobby!"),

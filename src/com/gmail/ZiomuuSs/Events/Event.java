@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
 
 import com.gmail.ZiomuuSs.Main;
+import com.gmail.ZiomuuSs.EventUtils.EventAction;
 import com.gmail.ZiomuuSs.EventUtils.EventPlayer;
 import com.gmail.ZiomuuSs.EventUtils.EventQueue;
 import com.gmail.ZiomuuSs.EventUtils.Lobby;
@@ -36,6 +37,7 @@ public class Event implements Listener {
   protected String name; //display name of event
   protected HashMap<Player, EventPlayer> players = new HashMap<>(); //Players in event
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
+  protected HashMap<Integer, EventAction[]> actions;
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers = -1; //max players in event, when <0 unlimited
   protected int minPlayers = 2; //min amount of players to start event
@@ -291,6 +293,8 @@ public class Event implements Listener {
 			description = fc.getStringList("description").toArray(description);
 		//loading startInventory
 		//TODO
+		//loading actions
+		actions = EventAction.loadActions(name, fc);
 		return true;
   }
   
