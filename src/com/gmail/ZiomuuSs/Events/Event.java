@@ -2,7 +2,9 @@ package com.gmail.ZiomuuSs.Events;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -38,7 +40,7 @@ public class Event implements Listener {
   protected String name; //display name of event
   protected HashMap<Player, EventPlayer> players = new HashMap<>(); //Players in event
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
-  protected HashMap<Integer, EventAction[]> actions;
+  protected HashMap<Integer, List<EventAction>> actions;
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers = -1; //max players in event, when <0 unlimited
   protected int minPlayers = 2; //min amount of players to start event
@@ -250,6 +252,15 @@ public class Event implements Listener {
 			}
 		}
 		return false;
+	}
+	
+	public void handleActions() {
+		ArrayList<Integer> keys = new ArrayList<>(actions.keySet());
+		Collections.sort(keys);
+		for (int time : keys)
+			if (time == timer)
+				for (EventAction a : actions.get(time))
+					a.apply(players.keySet());
 	}
   
   public boolean loadBasicVariables(Main plugin, FileConfiguration fc, String name, String type, Logger log, World world) {

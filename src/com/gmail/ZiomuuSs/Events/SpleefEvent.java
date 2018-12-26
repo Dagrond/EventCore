@@ -63,8 +63,8 @@ public class SpleefEvent extends Event {
     			BlockBreakEvent.getHandlerList().unregister(e);
     			broadcast(msg.EVENT_SPLEEF_START.get());
     		}
+    		handleActions();
     		++timer;
-    		
     	}
     }, 0L, 20L);
 	}

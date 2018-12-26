@@ -1,10 +1,9 @@
 package com.gmail.ZiomuuSs.EventUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -21,13 +20,15 @@ public class EventAction {
 		APPLY_EFFECT, //apply potion effect to all event participants
 		GIVE_ITEM, //give item to all event participants
 		END_EVENT, //end event
-		ANNOUNCE; //announce all players in event
+		ANNOUNCE, //announce all players in event
+		RESET_FLOOR; //reset (set to air or restore default material) floor on event. Only possible in event types: Spleef, tntrun. TODO in loadActions()
 	}
 	private ActionType type; //type of action
 	private PotionEffect potion;
 	private String message;
 	private ItemStack item;
-	private int itemAmount;
+	private int amount; //item amount if ActionType is GIVE_ITEM or floor level if ActionType is RESET_FLOOR
+	private boolean restore = true; //used in ActionType RESET_FLOOR. If true, floor is restored. if false floor is changed to air.
 	
 	
 	//constructor for END_EVENT
@@ -48,13 +49,13 @@ public class EventAction {
 	}
 	
 	//constructor for GIVE_ITEM
-	public EventAction(ItemStack item, int itemAmount) {
+	public EventAction(ItemStack item, int amount) {
 		type = ActionType.GIVE_ITEM;
 		this.item = item;
-		this.itemAmount = itemAmount;
+		this.amount = amount;
 	}
 	
-	public void apply(Player[] players) {
+	public void apply(Set<Player> players) {
 		
 	}
 	
@@ -62,7 +63,7 @@ public class EventAction {
 		return type;
 	}
 	
-	public static HashMap<Integer, EventAction[]> loadActions(String event, FileConfiguration fc) {
+	public static HashMap<Integer, List<EventAction>> loadActions(String event, FileConfiguration fc) {
 		Logger log = Bukkit.getLogger();
 		HashMap<Integer, List<EventAction>> map = new HashMap<>();
 		if (fc.isConfigurationSection("actions")) {
