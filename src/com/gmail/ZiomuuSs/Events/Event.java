@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -40,7 +40,7 @@ public class Event implements Listener {
   protected String name; //display name of event
   protected HashMap<Player, EventPlayer> players = new HashMap<>(); //Players in event
   protected ArrayList<Location> startPoints = new ArrayList<>(); //coordinates of spawn points when event begin
-  protected HashMap<Integer, List<EventAction>> actions;
+  protected HashMap<Integer, HashSet<EventAction>> actions;
   protected Inventory startInventory; //Inventory for every player when event begins
   protected int maxPlayers = -1; //max players in event, when <0 unlimited
   protected int minPlayers = 2; //min amount of players to start event
